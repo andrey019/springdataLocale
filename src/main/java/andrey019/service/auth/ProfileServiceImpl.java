@@ -1,9 +1,9 @@
 package andrey019.service.auth;
 
 
-import andrey019.dao.UserDao;
 import andrey019.model.json.JsonProfile;
 import andrey019.model.dao.User;
+import andrey019.repository.UserRepository;
 import andrey019.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final static String PASSWORD = "Password: ";
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
     private MailService mailService;
@@ -37,7 +37,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public JsonProfile getProfile(String email) {
         JsonProfile jsonProfile = new JsonProfile();
-        jsonProfile.setFromUser(userDao.getByEmail(email));
+        jsonProfile.setFromUser(userRepository.findByEmail(email));
         return jsonProfile;
     }
 
@@ -47,14 +47,14 @@ public class ProfileServiceImpl implements ProfileService {
                 (jsonProfile.getPassword() == null) ) {
             return NO_CHANGES;
         }
-        User user = userDao.getByEmail(email);
+        User user = userRepository.findByEmail(email);
         String encodedPassword = passCheckAndEncoding(jsonProfile.getPassword());
         String mailText = getMailText(jsonProfile);
         if (encodedPassword != null) {
             jsonProfile.setPassword(encodedPassword);
         }
         user.setFromJsonProfile(jsonProfile);
-        if (userDao.save(user)) {
+        if (userRepository.save(user) != null) {
             mailService.sendMail(email, MAIL_SUBJECT, mailText);
             return OK;
         }

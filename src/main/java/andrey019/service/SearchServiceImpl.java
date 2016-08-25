@@ -1,12 +1,13 @@
 package andrey019.service;
 
 
-import andrey019.dao.UserDao;
 import andrey019.model.dao.Todo;
 import andrey019.model.dao.TodoList;
 import andrey019.model.dao.User;
+import andrey019.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("searchService")
 public class SearchServiceImpl implements SearchService {
@@ -32,11 +33,12 @@ public class SearchServiceImpl implements SearchService {
     private final static String EMPTY = "";
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
+    @Transactional
     @Override
     public String findTodos(String email, String request) {
-        User user = userDao.getByEmailWithSharedListsAndTodos(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return EMPTY;
         }
@@ -46,7 +48,9 @@ public class SearchServiceImpl implements SearchService {
     private String searchAndBuild(User user, String request) {
         StringBuilder stringBuilder = new StringBuilder();
         boolean isFound = false;
+        user.getSharedTodoLists().size();
         for (TodoList todoList : user.getSharedTodoLists()) {
+            todoList.getTodos().size();
             for (Todo todo : todoList.getTodos()) {
                 if (todo.getTodoText().contains(request)) {
                     if (!isFound) {

@@ -109,7 +109,7 @@ public class UserController {
     @ResponseBody
     public String getTodoListDeleteInfo(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("getTodoListDeleteInfo " + getUserEmail());
-        return todoService.getTodoListInfo(getUserEmail(), jsonTodoList.getTodoListId());
+        return todoService.getDeleteInfo(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
     @RequestMapping(value = "/deleteTodoList", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")

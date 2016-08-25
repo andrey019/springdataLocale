@@ -1,18 +1,22 @@
 package andrey019.service.dao;
 
-import andrey019.dao.DoneTodoDao;
-import andrey019.dao.TodoDao;
-import andrey019.dao.TodoListDao;
-import andrey019.dao.UserDao;
+
 import andrey019.model.dao.DoneTodo;
 import andrey019.model.dao.Todo;
 import andrey019.model.dao.TodoList;
 import andrey019.model.dao.User;
+import andrey019.repository.DoneTodoRepository;
+import andrey019.repository.TodoListRepository;
+import andrey019.repository.TodoRepository;
+import andrey019.repository.UserRepository;
 import andrey019.service.HtmlGenerator;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
@@ -27,16 +31,16 @@ public class TodoServiceImpl implements TodoService {
     private final static String ALREDY_HAVE = "You already have this list!";
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
-    private TodoListDao todoListDao;
+    private TodoListRepository todoListRepository;
 
     @Autowired
-    private TodoDao todoDao;
+    private TodoRepository todoRepository;
 
     @Autowired
-    private DoneTodoDao doneTodoDao;
+    private DoneTodoRepository doneTodoRepository;
 
     @Autowired
     private HtmlGenerator htmlGenerator;
@@ -44,26 +48,35 @@ public class TodoServiceImpl implements TodoService {
     @Autowired
     private EmailValidator emailValidator;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
+    @Transactional
     @Override
     public boolean addTodoList(String email, String todoListName) {
         TodoList todoList = new TodoList();
         todoList.setName(todoListName);
-        User user = userDao.getByEmailWitnListsAndSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return false;
         }
         user.addTodoList(todoList);
         user.addSharedTodoList(todoList);
-        return userDao.save(user);
+        if (userRepository.save(user) == null) {
+            return false;
+        }
+        return true;
     }
 
+    @Transactional
     @Override
     public boolean addTodo(String email, long todoListId, String todoText) {
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return false;
         }
-        TodoList todoList = todoListDao.getByIdWithTodos(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return false;
         }
@@ -75,20 +88,21 @@ public class TodoServiceImpl implements TodoService {
         todo.setCreatedByName(user.getFullName());
         todo.setTodoText(todoText);
         todoList.addTodo(todo);
-        return todoListDao.save(todoList);
+        return (todoListRepository.save(todoList) != null);
     }
 
+    @Transactional
     @Override
     public boolean doneTodo(String email, long todoListId, long todoId) {
-        Todo todo = todoDao.getById(todoId);
+        Todo todo = todoRepository.findOne(todoId);
         if ( (todo == null) || (todo.getTodoList().getId() != todoListId) ) {
             return false;
         }
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if ( (user == null) || (!user.getSharedTodoLists().contains(todo.getTodoList())) ) {
             return false;
         }
-        TodoList todoList = todoListDao.getByIdWithTodosAndDoneTodos(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return false;
         }
@@ -98,20 +112,21 @@ public class TodoServiceImpl implements TodoService {
         doneTodo.setDoneByName(user.getFullName());
         todoList.addDoneTodo(doneTodo);
         todoList.removeTodo(todo);
-        return todoListDao.save(todoList);
+        return (todoListRepository.save(todoList) != null);
     }
 
+    @Transactional
     @Override
     public boolean unDoneTodo(String email, long todoListId, long doneTodoId) {
-        DoneTodo doneTodo = doneTodoDao.getById(doneTodoId);
+        DoneTodo doneTodo = doneTodoRepository.findOne(doneTodoId);
         if ( (doneTodo == null) || (doneTodo.getTodoList().getId() != todoListId) ) {
             return false;
         }
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if ( (user == null) || (!user.getSharedTodoLists().contains(doneTodo.getTodoList())) ) {
             return false;
         }
-        TodoList todoList = todoListDao.getByIdWithTodosAndDoneTodos(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return false;
         }
@@ -119,9 +134,10 @@ public class TodoServiceImpl implements TodoService {
         todo.setFromDoneTodo(doneTodo);
         todoList.addTodo(todo);
         todoList.removeDoneTodo(doneTodo);
-        return todoListDao.save(todoList);
+        return (todoListRepository.save(todoList) != null);
     }
 
+    @Transactional
     @Override
     public String shareWith(String email, long todoListId, String emailToShareWith) {
         if (!emailValidator.isValid(emailToShareWith)) {
@@ -130,15 +146,15 @@ public class TodoServiceImpl implements TodoService {
         if (email.equals(emailToShareWith)) {
             return ALREDY_HAVE;
         }
-        User userToShare = userDao.getByEmailWithSharedLists(emailToShareWith);
+        User userToShare = userRepository.findByEmail(emailToShareWith);
         if (userToShare == null) {
             return USER_NOT_FOUND;
         }
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        TodoList todoList = todoListDao.getByIdWithUsers(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return ERROR;
         }
@@ -146,23 +162,24 @@ public class TodoServiceImpl implements TodoService {
             return ERROR;
         }
         todoList.addUsers(userToShare);
-        if (!todoListDao.save(todoList)) {
+        if (todoListRepository.save(todoList) == null) {
             return ERROR;
         }
         return OK;
     }
 
+    @Transactional
     @Override
     public String unShareWith(String email, long todoListId, long idToUnShareWith) {
-        User user = userDao.getByEmail(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        User userToUnShare = userDao.getByIdWithSharedLists(idToUnShareWith);
+        User userToUnShare = userRepository.findOne(idToUnShareWith);
         if (userToUnShare == null) {
             return ERROR;
         }
-        TodoList todoList = todoListDao.getByIdWithUsers(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return ERROR;
         }
@@ -170,41 +187,41 @@ public class TodoServiceImpl implements TodoService {
             return ERROR;
         }
         todoList.removeUsers(userToUnShare);
-        if (!todoListDao.save(todoList)) {
+        if (todoListRepository.save(todoList) == null) {
             return ERROR;
         }
         return OK;
     }
 
+    @Transactional
     @Override
     public String deleteTodoList(String email, long todoListId) {
-        User user = userDao.getByEmail(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        TodoList todoList = todoListDao.getByIdWithUsersAndSharedLists(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return ERROR;
         }
         if (!todoList.getOwner().equals(user)) {
             return NOT_OWNER;
         }
+        todoList.getUsers().size();
         for (User innerUser : todoList.getUsers()) {
             innerUser.getSharedTodoLists().remove(todoList);
         }
-        if (!todoListDao.delete(todoList)) {
-            return ERROR;
-        }
+        todoListRepository.delete(todoList);
         return OK;
     }
 
     @Override
-    public String getTodoListInfo(String email, long todoListId) {
-        User user = userDao.getByEmail(email);
+    public String getDeleteInfo(String email, long todoListId) {
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        List<User> users = userDao.getUsersByTodoListId(todoListId);
+        List<User> users = userRepository.findBySharedTodoLists_Id(todoListId);
         if ( (users == null) || (users.isEmpty()) ) {
             return ERROR;
         }
@@ -215,19 +232,21 @@ public class TodoServiceImpl implements TodoService {
         return htmlGenerator.generateTodoListsInfoHtml(users);
     }
 
+    @Transactional
     @Override
     public String getSharedWithInfo(String email, long todoListId) {
-        User user = userDao.getByEmail(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        TodoList todoList = todoListDao.getByIdWithUsers(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return ERROR;
         }
         if (!todoList.getUsers().contains(user)) {
             return ERROR;
         }
+        entityManager.detach(todoList);
         todoList.getUsers().remove(user);
         if (todoList.getOwner().equals(user)) {
             return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), null);
@@ -237,44 +256,50 @@ public class TodoServiceImpl implements TodoService {
         }
     }
 
+    @Transactional
     @Override
     public Set<Todo> getTodosByListId(String email, long todoListId) {
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
         }
-        TodoList todoList = todoListDao.getByIdWithTodos(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return null;
         }
         if (!user.getSharedTodoLists().contains(todoList)) {
             return null;
         }
+        todoList.getTodos().size();
         return todoList.getTodos();
     }
 
+    @Transactional
     @Override
     public Set<DoneTodo> getDoneTodosByListId(String email, long todoListId) {
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
         }
-        TodoList todoList = todoListDao.getByIdWithDoneTodos(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return null;
         }
         if (!user.getSharedTodoLists().contains(todoList)) {
             return null;
         }
+        todoList.getDoneTodos().size();
         return todoList.getDoneTodos();
     }
 
+    @Transactional
     @Override
     public Set<TodoList> getAllTodoLists(String email) {
-        User user = userDao.getByEmailWithSharedLists(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
         }
+        user.getSharedTodoLists().size();
         return user.getSharedTodoLists();
     }
 
@@ -283,7 +308,7 @@ public class TodoServiceImpl implements TodoService {
         if (user == null) {
             return null;
         }
-        TodoList todoList = todoListDao.getById(todoListId);
+        TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
             return null;
         }

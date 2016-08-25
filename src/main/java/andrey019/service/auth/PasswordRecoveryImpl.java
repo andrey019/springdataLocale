@@ -1,8 +1,8 @@
 package andrey019.service.auth;
 
 
-import andrey019.dao.UserDao;
 import andrey019.model.dao.User;
+import andrey019.repository.UserRepository;
 import andrey019.service.MailService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -24,7 +24,7 @@ public class PasswordRecoveryImpl implements PasswordRecovery {
     private final static String OK = "ok";
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
     private MailService mailService;
@@ -40,13 +40,13 @@ public class PasswordRecoveryImpl implements PasswordRecovery {
         if (!isEmailValid(email)) {
             return NOT_VALID;
         }
-        User user = userDao.getByEmail(email);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             return NOT_FOUND;
         }
         String password = RandomStringUtils.random(10, true, true);
         user.setPassword(passwordEncoder.encode(password));
-        if (userDao.save(user)) {
+        if (userRepository.save(user) != null) {
             mailService.sendMail(email, MAIL_SUBJECT, getMailText(password));
             return OK;
         }

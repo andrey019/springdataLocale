@@ -1,7 +1,7 @@
 package andrey019.service.maintenance;
 
 
-import andrey019.dao.RegistrationDao;
+import andrey019.repository.UserConfirmationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ConfirmationCleanUpService extends Thread {
@@ -11,8 +11,9 @@ public class ConfirmationCleanUpService extends Thread {
     private final static long CLEANUP_AFTER = 86400000;
     private final static long CHECK_INTERVAL = 3600000;
 
+
     @Autowired
-    private RegistrationDao registrationDao;
+    private UserConfirmationRepository userConfirmationRepository;
 
     private ConfirmationCleanUpService() {}
 
@@ -26,7 +27,7 @@ public class ConfirmationCleanUpService extends Thread {
         while (!isInterrupted()) {
             try {
                 Thread.sleep(CHECK_INTERVAL);
-                registrationDao.deleteByDateOlderThen(System.currentTimeMillis() - CLEANUP_AFTER);
+                userConfirmationRepository.deleteByDateLessThan(System.currentTimeMillis() - CLEANUP_AFTER);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -1,17 +1,17 @@
 package andrey019.service.auth;
 
 
-import andrey019.dao.RegistrationDao;
-import andrey019.dao.TodoListDao;
-import andrey019.dao.UserDao;
 import andrey019.model.dao.TodoList;
 import andrey019.model.dao.User;
 import andrey019.model.dao.UserConfirmation;
+import andrey019.repository.UserConfirmationRepository;
+import andrey019.repository.UserRepository;
 import andrey019.service.MailService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("registrationService")
 public class RegistrationServiceImpl implements RegistrationService {
@@ -29,11 +29,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final static String ERROR = "Registration error!";
     private final static String FIRST_LIST = "my first todo list";
 
-    @Autowired
-    private RegistrationDao registrationDao;
 
     @Autowired
-    private UserDao userDao;
+    private UserConfirmationRepository userConfirmationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -72,25 +73,23 @@ public class RegistrationServiceImpl implements RegistrationService {
         userConfirmation.setPassword(passwordEncoder.encode(password));
         userConfirmation.setCode(passwordEncoder.encode(email + System.currentTimeMillis()));
         userConfirmation.setDate(System.currentTimeMillis());
-        if (registrationDao.save(userConfirmation)) {
+        if (userConfirmationRepository.save(userConfirmation) != null) {
             mailService.sendMail(email, MAIL_SUBJECT, getMailText(userConfirmation.getCode()));
             return OK;
         }
         return ERROR;
     }
 
+    @Transactional
     @Override
     public boolean confirmRegistration(String code) {
-        UserConfirmation userConfirmation = registrationDao.getByCode(code);
+        UserConfirmation userConfirmation = userConfirmationRepository.findByCode(code);
         if (userConfirmation == null) {
             return false;
         }
         User user = new User();
         user.setUserFromConfirmation(userConfirmation);
-        if (!userDao.save(user)) {
-            return false;
-        }
-        user = userDao.getByEmailWitnListsAndSharedLists(user.getEmail());
+        user = userRepository.save(user);
         if (user == null) {
             return false;
         }
@@ -98,8 +97,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         todoList.setName(FIRST_LIST);
         user.addTodoList(todoList);
         user.addSharedTodoList(todoList);
-        if (userDao.save(user)) {
-            registrationDao.delete(userConfirmation);
+        if (userRepository.save(user) != null) {
+            userConfirmationRepository.delete(userConfirmation);
             return true;
         }
         return false;
@@ -110,14 +109,14 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private boolean isEmailWaiting(String email) {
-        if (registrationDao.getByEmail(email) == null) {
+        if (userConfirmationRepository.findByEmail(email) == null) {
             return false;
         }
         return true;
     }
 
     private boolean isEmailUsed(String email) {
-        if (userDao.getByEmail(email) == null) {
+        if (userRepository.findByEmail(email) == null) {
             return false;
         }
         return true;

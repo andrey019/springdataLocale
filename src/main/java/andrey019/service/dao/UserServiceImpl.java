@@ -1,7 +1,7 @@
 package andrey019.service.dao;
 
-import andrey019.dao.UserDao;
 import andrey019.model.dao.User;
+import andrey019.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserDao dao;
+    private UserRepository userRepository;
 
     @Override
     public User getByEmail(String email) {
-        return dao.getByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
 }

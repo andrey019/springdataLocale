@@ -19,5 +19,7 @@ public class TestsUtil {
         System.out.println(stringBuilder.toString());
 
         System.out.println(RandomStringUtils.random(10, true, true));
+
+        System.out.println(System.currentTimeMillis());
     }
 }
