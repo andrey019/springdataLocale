@@ -38,7 +38,7 @@
 </nav>
 
 <div style="width: 100%; overflow: hidden; padding-top: 70px">
-    <div style="width: 325px; float: left; position: fixed; bottom: 150px; height: auto; top: 70px; overflow-y: auto;">
+    <div style="width: 337px; float: left; position: fixed; bottom: 150px; height: auto; top: 70px; overflow-y: auto;">
         <div style="width: 290px; float: left; margin-left: 15px">
             <div class="row" style="width: 320px">
                 <div class="col-lg-6" style="width: 100%">
