@@ -4,7 +4,6 @@ import andrey019.model.json.JsonFindTodo;
 import andrey019.model.json.JsonMessage;
 import andrey019.model.json.JsonProfile;
 import andrey019.model.json.JsonTodoList;
-import andrey019.service.HtmlGenerator;
 import andrey019.service.SearchService;
 import andrey019.service.auth.ProfileService;
 import andrey019.service.dao.TodoService;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    private final static String RESPONSE_OK = "ok";
-    private final static String RESPONSE_ERROR = "error";
+    private final static String TEXT_UTF8 = "text/plain;charset=UTF-8";
+    private final static String JSON_UTF8 = "application/json;charset=UTF-8";
 
     @Autowired
     private LogService logService;
@@ -34,8 +33,6 @@ public class UserController {
     @Autowired
     private SearchService searchService;
 
-    @Autowired
-    private HtmlGenerator htmlGenerator;
 
     @RequestMapping(value = {"/", ""}, method = RequestMethod.GET)
     public String userPage() {
@@ -43,117 +40,104 @@ public class UserController {
         return "user_page";
     }
 
-    @RequestMapping(value = "/loadLists", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/loadLists", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String loadLists() {
         logService.ajaxJson("loadLists " + getUserEmail());
-        return htmlGenerator.generateTodoListsHtml(todoService.getAllTodoLists(getUserEmail()));
+        return todoService.getAllTodoLists(getUserEmail());
     }
 
-    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String loadTodos(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("loadTodos " + getUserEmail());
-        return htmlGenerator.generateTodosHtml(todoService.getTodosByListId(getUserEmail(), jsonMessage.getListId()));
+        return todoService.getTodosByListId(getUserEmail(), jsonMessage.getListId());
     }
 
-    @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String loadDoneTodos(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("loadDoneTodos " + getUserEmail());
-        return htmlGenerator.generateDoneTodosHtml
-                (todoService.getDoneTodosByListId(getUserEmail(), jsonMessage.getListId()));
+        return todoService.getDoneTodosByListId(getUserEmail(), jsonMessage.getListId());
     }
 
-    @RequestMapping(value = "/addTodo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/addTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String addTodo(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("addTodo " + getUserEmail());
-        if (todoService.addTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getTodoText())) {
-            return RESPONSE_OK;
-        }
-        return RESPONSE_ERROR;
+        return todoService.addTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getTodoText());
     }
 
-    @RequestMapping(value = "/doneTodo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/doneTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String doneTodo(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("doneTodo " + getUserEmail());
-        if (todoService.doneTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getTodoId())) {
-            return RESPONSE_OK;
-        }
-        return RESPONSE_ERROR;
+        return todoService.doneTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getTodoId());
     }
 
-    @RequestMapping(value = "/unDoneTodo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/unDoneTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String unDoneTodo(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("unDoneTodo " + getUserEmail());
-        if (todoService.unDoneTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getDoneTodoId())) {
-            return RESPONSE_OK;
-        }
-        return RESPONSE_ERROR;
+        return todoService.unDoneTodo(getUserEmail(), jsonMessage.getListId(), jsonMessage.getDoneTodoId());
     }
 
-    @RequestMapping(value = "/addTodoList", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/addTodoList", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String addTodoList(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("addTodoList " + getUserEmail());
-        if (todoService.addTodoList(getUserEmail(), jsonMessage.getListName())) {
-            return RESPONSE_OK;
-        }
-        return RESPONSE_ERROR;
+        return todoService.addTodoList(getUserEmail(), jsonMessage.getListName());
     }
 
-    @RequestMapping(value = "/todoListDeleteInfo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/todoListDeleteInfo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String getTodoListDeleteInfo(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("getTodoListDeleteInfo " + getUserEmail());
         return todoService.getDeleteInfo(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
-    @RequestMapping(value = "/deleteTodoList", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/deleteTodoList", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String deleteTodoList(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("getTodoListDeleteInfo " + getUserEmail());
         return todoService.deleteTodoList(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
-    @RequestMapping(value = "/todoListShareInfo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/todoListShareInfo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String todoListShareInfo(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("todoListShareInfo " + getUserEmail());
         return todoService.getSharedWithInfo(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
-    @RequestMapping(value = "/shareUser", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/shareUser", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String shareUser(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("shareUser " + getUserEmail());
         return todoService.shareWith(getUserEmail(), jsonMessage.getListId(), jsonMessage.getShareWith());
     }
 
-    @RequestMapping(value = "/unShareUser", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/unShareUser", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String unShareUser(@RequestBody JsonMessage jsonMessage) {
         logService.ajaxJson("unShareUser " + getUserEmail());
         return todoService.unShareWith(getUserEmail(), jsonMessage.getListId(), jsonMessage.getUnShareWith());
     }
 
-    @RequestMapping(value = "/getProfile", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getProfile", method = RequestMethod.POST, produces = JSON_UTF8)
     public @ResponseBody JsonProfile getProfile() {
         logService.ajaxJson("getProfile " + getUserEmail());
         return profileService.getProfile(getUserEmail());
     }
 
-    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String updateProfile(@RequestBody JsonProfile jsonProfile) {
         logService.ajaxJson("updateProfile " + getUserEmail());
         return profileService.updateProfile(getUserEmail(), jsonProfile);
     }
 
-    @RequestMapping(value = "/findTodo", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/findTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
         logService.ajaxJson("findTodo " + getUserEmail() + " / " + jsonFindTodo.getRequest());

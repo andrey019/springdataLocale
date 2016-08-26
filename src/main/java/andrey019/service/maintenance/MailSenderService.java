@@ -22,8 +22,8 @@ public class MailSenderService extends Thread {
 
     private final static MailSenderService MAIL_SENDER_SERVICE = new MailSenderService();
     private final static ConcurrentLinkedQueue<CustomMessage> QUEUE = new ConcurrentLinkedQueue<>();
-    private final static long INITIAL_DELAY = 10000;
-    private final static long SEND_INTERVAL = 70000;
+    private final static long INITIAL_DELAY_MILLISECONDS = 10 * 1000;
+    private final static long SEND_INTERVAL_MILLISECONDS = 70 * 1000;
     private final static String CONTENT_TYPE = "text/html;charset=UTF-8";
 
     private MailSenderService() {}
@@ -31,13 +31,13 @@ public class MailSenderService extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(INITIAL_DELAY);
+            Thread.sleep(INITIAL_DELAY_MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         while (!isInterrupted()) {
             try {
-                Thread.sleep(SEND_INTERVAL);
+                Thread.sleep(SEND_INTERVAL_MILLISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

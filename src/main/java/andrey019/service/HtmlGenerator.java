@@ -12,8 +12,12 @@ import java.util.Set;
 public interface HtmlGenerator {
 
     String generateTodoListsHtml(Set<TodoList> todoLists);
+
     String generateTodosHtml(Set<Todo> todos);
+
     String generateDoneTodosHtml(Set<DoneTodo> doneTodos);
+
     String generateTodoListsInfoHtml(List<User> users);
+
     String generateSharedInfoHtml(Set<User> users, User owner);
 }

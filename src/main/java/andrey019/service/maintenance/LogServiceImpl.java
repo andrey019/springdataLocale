@@ -2,19 +2,20 @@ package andrey019.service.maintenance;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @Service("logService")
 public class LogServiceImpl implements LogService {
 
-    private StringBuilder stringBuilder;
-    private final static long TIMEZONE_CORRECTION = 25200000;
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final static long TIMEZONE_CORRECTION_MILLISECONDS = 7 * 60 * 60 * 1000;
+
 
     @Override
     public void accessToPage(String message) {
-        stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(new Date(System.currentTimeMillis() + TIMEZONE_CORRECTION));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
         stringBuilder.append("] [Access to Page] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
@@ -22,9 +23,9 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void mailSent(String message, int queued) {
-        stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(new Date(System.currentTimeMillis() + TIMEZONE_CORRECTION));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
         stringBuilder.append("] [Mail Sent, Queued ");
         stringBuilder.append(queued);
         stringBuilder.append("] ");
@@ -34,9 +35,9 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void ajaxJson(String message) {
-        stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(new Date(System.currentTimeMillis() + TIMEZONE_CORRECTION));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
         stringBuilder.append("] [AJAX/JSON] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());

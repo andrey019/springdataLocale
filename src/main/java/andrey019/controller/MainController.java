@@ -1,7 +1,6 @@
 package andrey019.controller;
 
 import andrey019.service.maintenance.LogService;
-import andrey019.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +13,6 @@ public class MainController {
 
     @Autowired
     private LogService logService;
-
-    @Autowired
-    private MailService mailService;
 
 
 	@RequestMapping("/")

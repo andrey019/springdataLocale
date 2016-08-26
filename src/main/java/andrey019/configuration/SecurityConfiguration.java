@@ -26,6 +26,8 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final static int REMEMBER_ME_VALIDITY_SECONDS = 7 * 24 * 60 * 60;
+
     @Autowired
     public CustomSuccessHandler customSuccessHandler;
 
@@ -66,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/").successHandler(customSuccessHandler)
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(604800)
+                .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS)
                 .and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/auth/accessDenied");
 

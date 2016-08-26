@@ -54,7 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (isEmailWaiting(email) || isEmailUsed(email)) {
             return EMAIL_IN_USE;
         }
-        return null;
+        return OK;
     }
 
     @Override

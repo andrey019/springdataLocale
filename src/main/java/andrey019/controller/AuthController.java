@@ -23,6 +23,7 @@ public class AuthController {
 
     private final static String RESPONSE_OK = "ok";
     private final static String RESPONSE_ERROR = "error";
+    private final static String TEXT_UTF8 = "text/plain;charset=UTF-8";
 
     @Autowired
     private LogService logService;
@@ -55,18 +56,14 @@ public class AuthController {
         return "access_denied";
     }
 
-    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String emailCheck(@RequestBody JsonEmail jsonEmail) {
         logService.ajaxJson("emailCheck " + jsonEmail.getEmail());
-        String check = registrationService.preRegistrationCheck(jsonEmail.getEmail());
-        if (check != null) {
-            return check;
-        }
-        return RESPONSE_OK;
+        return registrationService.preRegistrationCheck(jsonEmail.getEmail());
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/registration", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String registration(@RequestBody JsonRegistration jsonRegistration) {
         logService.ajaxJson("registration " + jsonRegistration.getEmail());
@@ -92,7 +89,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/passwordRecovery", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/passwordRecovery", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
     public String passwordRecovery(@RequestBody JsonEmail jsonEmail) {
         logService.ajaxJson("passwordRecovery " + jsonEmail.getEmail());
