@@ -737,12 +737,6 @@ function findTodo() {
             document.getElementById("searchResult").innerHTML = data;
             document.getElementById(window.currentList.id).className = "list-group-item";
             window.currentList = null;
-
-            //if (data != "") {
-            //    document.getElementById("searchResult").innerHTML = data;
-            //} else {
-            //    document.getElementById("searchResult").innerHTML = "";
-            //}
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);
