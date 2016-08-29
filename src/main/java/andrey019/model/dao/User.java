@@ -40,6 +40,9 @@ public class User {
     @Column(nullable = false)
     private String role = Role.USER.getRole();
 
+    @Column(name = "sign_in_provider")
+    private String signInProvider;
+
     public long getId() {
         return id;
     }
@@ -110,6 +113,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getSignInProvider() {
+        return signInProvider;
+    }
+
+    public void setSignInProvider(String signInProvider) {
+        this.signInProvider = signInProvider;
     }
 
     public String getFullName() {

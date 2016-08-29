@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,10 +18,13 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.sql.DataSource;
 
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
 @ComponentScan("andrey019")
 @EnableWebSecurity
@@ -30,6 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public CustomSuccessHandler customSuccessHandler;
+
+    @Autowired
+    @Qualifier("userSocialDetails")
+    public SocialUserDetailsService socialUserDetailsService;
 
     @Autowired
     @Qualifier("customUserDetailsService")
@@ -65,6 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "favicon.ico").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/user/**").access("hasRole('ADMIN') or hasRole('USER')")
+                .and().apply(new SpringSocialConfigurer())
                 .and().formLogin().loginPage("/").successHandler(customSuccessHandler)
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
