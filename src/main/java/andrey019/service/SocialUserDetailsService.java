@@ -18,6 +18,11 @@ public class SocialUserDetailsService implements org.springframework.social.secu
     @Override
     public SocialUserDetails loadUserByUserId(String s) throws UsernameNotFoundException {
         User user = userService.getByEmail(s);
+        System.out.println("User : " + user);
+        if (user == null) {
+            System.out.println("User not found");
+            throw new UsernameNotFoundException("Username not found");
+        }
         return UserDetails.getBuilder()
                 .id(user.getId())
                 .username(user.getEmail())
