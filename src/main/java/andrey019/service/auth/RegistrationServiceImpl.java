@@ -60,7 +60,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public String registration(String email, String password, String fName, String lName) {
         String check = preRegistrationCheck(email);
-        if (check != null) {
+        if (!check.equals(OK)) {
             return check;
         }
         if ( fName.isEmpty() || lName.isEmpty() || (password.length() < 6) || (password.length() > 20) ) {
