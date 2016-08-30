@@ -37,6 +37,12 @@ public class AuthController {
     @Autowired
     private PasswordRecovery passwordRecovery;
 
+//    @RequestMapping("/facebook")
+//    @ResponseBody
+//    public String facebook() {
+//        System.out.println("auth/facebook");
+//        return "ololo";
+//    }
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

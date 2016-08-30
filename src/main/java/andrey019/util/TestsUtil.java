@@ -27,5 +27,8 @@ public class TestsUtil {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(dateFormat.format(System.currentTimeMillis()));
+
+//        Long time = new Long(1477741569385);
+//        System.out.println(time - System.currentTimeMillis());
     }
 }

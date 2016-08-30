@@ -1,5 +1,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -9,6 +10,7 @@
     <link rel="icon" href="/resources/images/favicon.ico" type="image\x-icon" />
     <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/css/modal.css" rel="stylesheet">
+    <link href="/resources/css/social-buttons-3.css" rel="stylesheet">
     <script type="text/javascript" src="/resources/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="/resources/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/resources/js/mainPageScripts.js"></script>
@@ -72,6 +74,11 @@
         <div class="form-actions">
             <input type="submit" class="btn btn-block btn-primary" value="Sign in">
         </div><br>
+        <div>
+            <a class="btn btn-block btn-social btn-facebook" href="auth/facebook">
+                <span class="fa fa-facebook"></span> Sign in with Facebook
+            </a>
+        </div>         <br>
         <button id="recoveryButton" type="button" class="btn btn-danger" style="width: 100%">Can't remember my password...</button>
     </form>
 
