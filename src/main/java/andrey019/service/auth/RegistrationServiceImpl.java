@@ -7,6 +7,7 @@ import andrey019.model.dao.UserConfirmation;
 import andrey019.repository.UserConfirmationRepository;
 import andrey019.repository.UserRepository;
 import andrey019.service.MailService;
+import andrey019.service.maintenance.LogService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +49,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     private EmailValidator emailValidator;
+
+    @Autowired
+    private LogService logService;
 
 
     @Override
@@ -113,6 +117,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.addTodoList(todoList);
         user.addSharedTodoList(todoList);
         if (userRepository.save(user) != null) {
+            logService.newUser(user.toString());
             return true;
         }
         return false;
@@ -136,6 +141,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.addTodoList(todoList);
         user.addSharedTodoList(todoList);
         if (userRepository.save(user) != null) {
+            logService.newUser(user.toString());
             userConfirmationRepository.delete(userConfirmation);
             return true;
         }

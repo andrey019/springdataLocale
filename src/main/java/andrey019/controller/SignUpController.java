@@ -2,6 +2,7 @@ package andrey019.controller;
 
 
 import andrey019.service.auth.RegistrationService;
+import andrey019.service.maintenance.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;
@@ -22,30 +23,24 @@ public class SignUpController {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private LogService logService;
+
     private final static String RESPONSE_ERROR = "error";
 
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(WebRequest webRequest, HttpServletRequest request) {
-        System.out.println("signup");
-
+        logService.accessToPage("signup");
         Connection<?> connection = signInUtils.getConnectionFromSession(webRequest);
         UserProfile userProfile = connection.fetchUserProfile();
-        System.out.println(userProfile);
-        System.out.println(connection.getKey().getProviderId());
-        System.out.println(userProfile.getEmail() + " / " + userProfile.getUsername() + " / "
-                + userProfile.getId() + " / " + userProfile.getFirstName() + " / " + userProfile.getName());
-
         if (userProfile.getEmail() == null) {
             request.setAttribute("socialSignUp", RESPONSE_ERROR);
             return "main_page";
         }
-
         registrationService.socialRegistration(connection.getKey().getProviderId(), userProfile.getEmail(),
                 userProfile.getFirstName(), userProfile.getLastName());
-
         signInUtils.doPostSignUp(userProfile.getEmail(), webRequest);
-
         return "redirect:/auth/" + connection.getKey().getProviderId();
     }
 }

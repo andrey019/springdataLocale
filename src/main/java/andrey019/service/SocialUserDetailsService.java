@@ -3,6 +3,7 @@ package andrey019.service;
 
 import andrey019.model.dao.User;
 import andrey019.service.dao.UserService;
+import andrey019.service.maintenance.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,14 +21,17 @@ public class SocialUserDetailsService implements org.springframework.social.secu
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LogService logService;
+
     @Override
     public SocialUserDetails loadUserByUserId(String s) throws UsernameNotFoundException {
         User user = userService.getByEmail(s);
-        System.out.println("User social : " + user);
         if (user == null) {
-            System.out.println("User social not found");
+            logService.signIn("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
+        logService.signIn(user.toString());
         return new SocialUser(user.getEmail(), user.getPassword(),
                 user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));
     }

@@ -79,6 +79,9 @@
         <div class="form-actions">
             <input type="submit" class="btn btn-block btn-primary" value="Sign in">
         </div><br>
+        <button id="recoveryButton" type="button" class="btn btn-danger" style="width: 100%">
+            Can't remember my password...
+        </button><br><br>
         <div>
             <a class="btn btn-block btn-social btn-facebook" href="auth/facebook">
                 <span class="fa fa-facebook"></span> Sign in with Facebook
@@ -88,13 +91,7 @@
             <a class="btn btn-block btn-social btn-google-plus" href="auth/google">
                 <span class="fa fa-google-plus"></span> Sign in with Google
             </a>
-        </div><br>
-        <div>
-            <a class="btn btn-block btn-social btn-vk" href="auth/vkontakte">
-                <span class="fa fa-vk"></span> Sign in with VKontakte
-            </a>
-        </div><br>
-        <button id="recoveryButton" type="button" class="btn btn-danger" style="width: 100%">Can't remember my password...</button>
+        </div>
     </form>
 
 </div>

@@ -19,7 +19,6 @@ import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
-import org.springframework.social.vkontakte.connect.VKontakteConnectionFactory;
 
 import javax.sql.DataSource;
 
@@ -31,8 +30,6 @@ public class SocialConfiguration implements SocialConfigurer {
     private final static String FACEBOOK_SECRET = "0ca404bdd6a11251f85a8253a2769267";
     private final static String GOOGLE_ID = "950741425322-cajgej1k39gu357ut0kaal666uv3s9h4.apps.googleusercontent.com";
     private final static String GOOGLE_SECRET = "oI7sf2lYg3MHdIahL1HvkXYr";
-    private final static String VK_ID = "5612639";
-    private final static String VK_SECRET = "6uBmM6SFLnKPBjawHRL2";
 
 
     @Autowired
@@ -48,10 +45,6 @@ public class SocialConfiguration implements SocialConfigurer {
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_ID, GOOGLE_SECRET);
         googleConnectionFactory.setScope("email");
         connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
-
-        VKontakteConnectionFactory vKontakteConnectionFactory = new VKontakteConnectionFactory(VK_ID, VK_SECRET);
-        vKontakteConnectionFactory.setScope("email");
-        connectionFactoryConfigurer.addConnectionFactory(vKontakteConnectionFactory);
     }
 
     @Override

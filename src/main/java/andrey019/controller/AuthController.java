@@ -48,10 +48,10 @@ public class AuthController {
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
+            logService.accessToPage("logout " + getUserEmail());
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        logService.accessToPage("logout");
         return "redirect:/";
     }
 

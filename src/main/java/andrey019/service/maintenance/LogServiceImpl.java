@@ -42,4 +42,24 @@ public class LogServiceImpl implements LogService {
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
     }
+
+    @Override
+    public void signIn(String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append("] [SignIn] ");
+        stringBuilder.append(message);
+        System.out.println(stringBuilder.toString());
+    }
+
+    @Override
+    public void newUser(String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append("] [NewUser] ");
+        stringBuilder.append(message);
+        System.out.println(stringBuilder.toString());
+    }
 }
