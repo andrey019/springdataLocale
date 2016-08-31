@@ -29,7 +29,7 @@ public class SignUpController {
     private final static String RESPONSE_ERROR = "error";
 
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = {"/signup", "/signin"}, method = RequestMethod.GET)
     public String signup(WebRequest webRequest, HttpServletRequest request) {
         logService.accessToPage("signup");
         Connection<?> connection = signInUtils.getConnectionFromSession(webRequest);
