@@ -70,9 +70,6 @@
         </div>
         <br><br>
         <div id="searchResult" style="width: 100%; padding-right: 30px">
-            <%--<div id="searchResult" class="list-group" style="padding-right: 30px">--%>
-
-            <%--</div>--%>
 
         </div>
         <div style="width: 100%">
@@ -111,11 +108,6 @@
 
 </div>
 
-<%--<script type="text/javascript">--%>
-    <%--$(document).ready(function () {--%>
-        <%--loadLists();--%>
-    <%--});--%>
-<%--</script>--%>
 
 <div id="profileModal" class="modal">
     <div class="modal-content">
