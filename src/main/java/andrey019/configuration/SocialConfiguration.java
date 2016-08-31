@@ -28,8 +28,8 @@ public class SocialConfiguration implements SocialConfigurer {
 
     private final static String FACEBOOK_ID = "547901995417408";
     private final static String FACEBOOK_SECRET = "0ca404bdd6a11251f85a8253a2769267";
-    private final static String GOOGLE_ID = "950741425322-cajgej1k39gu357ut0kaal666uv3s9h4.apps.googleusercontent.com";
-    private final static String GOOGLE_SECRET = "oI7sf2lYg3MHdIahL1HvkXYr";
+    private final static String GOOGLE_ID = "950741425322-tpqdvbo1cqr10i86st1poeve2udrjo3n.apps.googleusercontent.com";
+    private final static String GOOGLE_SECRET = "72AGGEShd-DyY2WWLIIosskV";
 
 
     @Autowired
