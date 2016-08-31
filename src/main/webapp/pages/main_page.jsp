@@ -54,6 +54,11 @@
             <p>Registration error!</p>
         </div>
     </c:if>
+    <c:if test="${requestScope['socialSignUp'] == 'error'}">
+        <div class="alert alert-danger" role="alert">
+            <p>Registration error! Couldn't get your email from social provider</p>
+        </div>
+    </c:if>
     <form method="post" action="/">
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
@@ -78,7 +83,17 @@
             <a class="btn btn-block btn-social btn-facebook" href="auth/facebook">
                 <span class="fa fa-facebook"></span> Sign in with Facebook
             </a>
-        </div>         <br>
+        </div><br>
+        <div>
+            <a class="btn btn-block btn-social btn-google-plus" href="auth/google">
+                <span class="fa fa-google-plus"></span> Sign in with Google
+            </a>
+        </div><br>
+        <div>
+            <a class="btn btn-block btn-social btn-vk" href="auth/vkontakte">
+                <span class="fa fa-vk"></span> Sign in with VKontakte
+            </a>
+        </div><br>
         <button id="recoveryButton" type="button" class="btn btn-danger" style="width: 100%">Can't remember my password...</button>
     </form>
 

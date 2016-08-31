@@ -77,7 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/").successHandler(customSuccessHandler)
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS)
+                .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS).alwaysRemember(true)
                 .and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/auth/accessDenied");
 

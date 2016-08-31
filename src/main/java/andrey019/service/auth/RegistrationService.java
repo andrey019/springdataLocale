@@ -7,5 +7,7 @@ public interface RegistrationService {
 
     String registration(String email, String password, String fName, String lName);
 
+    boolean socialRegistration(String signInProvider, String email, String fName, String lName);
+
     boolean confirmRegistration(String code);
 }

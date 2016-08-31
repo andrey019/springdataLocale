@@ -29,6 +29,9 @@ public class TestsUtil {
         System.out.println(dateFormat.format(System.currentTimeMillis()));
 
 //        Long time = new Long(1477741569385);
-//        System.out.println(time - System.currentTimeMillis());
+        long timeFacebook = Long.decode("1477828913657");
+        long timeGoogle = Long.decode("1472655161548");
+        System.out.println("facebook = " + (timeFacebook - System.currentTimeMillis()));
+        System.out.println("google = " + (timeGoogle - System.currentTimeMillis()));
     }
 }

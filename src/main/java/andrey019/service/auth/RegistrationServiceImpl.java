@@ -29,6 +29,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final static String ERROR = "Registration error!";
     private final static String FIRST_LIST = "my first todo list";
 
+    private final static String SOCIAL_PASSWORD = "socialPassword";
+    private final static String SOCIAL_FIRST_NAME = "firstName";
+    private final static String SOCIAL_LAST_NAME = "lastName";
+
 
     @Autowired
     private UserConfirmationRepository userConfirmationRepository;
@@ -78,6 +82,40 @@ public class RegistrationServiceImpl implements RegistrationService {
             return OK;
         }
         return ERROR;
+    }
+
+    @Override
+    public boolean socialRegistration(String signInProvider, String email, String fName, String lName) {
+        String check = preRegistrationCheck(email);
+        if (!check.equals(OK)) {
+            return false;
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(SOCIAL_PASSWORD);
+        user.setSignInProvider(signInProvider);
+        if (fName != null) {
+            user.setfName(fName);
+        } else {
+            user.setfName(SOCIAL_FIRST_NAME);
+        }
+        if (lName != null) {
+            user.setlName(lName);
+        } else {
+            user.setlName(SOCIAL_LAST_NAME);
+        }
+        user = userRepository.save(user);
+        if (user == null) {
+            return false;
+        }
+        TodoList todoList = new TodoList();
+        todoList.setName(FIRST_LIST);
+        user.addTodoList(todoList);
+        user.addSharedTodoList(todoList);
+        if (userRepository.save(user) != null) {
+            return true;
+        }
+        return false;
     }
 
     @Transactional
