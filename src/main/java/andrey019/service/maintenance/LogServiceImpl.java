@@ -3,19 +3,22 @@ package andrey019.service.maintenance;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 @Service("logService")
 public class LogServiceImpl implements LogService {
 
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private final static long TIMEZONE_CORRECTION_MILLISECONDS = 7 * 60 * 60 * 1000;
+    static {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+    }
 
 
     @Override
     public void accessToPage(String message) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
         stringBuilder.append("] [Access to Page] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
@@ -25,7 +28,7 @@ public class LogServiceImpl implements LogService {
     public void mailSent(String message, int queued) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
         stringBuilder.append("] [Mail Sent, Queued ");
         stringBuilder.append(queued);
         stringBuilder.append("] ");
@@ -37,7 +40,7 @@ public class LogServiceImpl implements LogService {
     public void ajaxJson(String message) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
         stringBuilder.append("] [AJAX/JSON] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
@@ -47,7 +50,7 @@ public class LogServiceImpl implements LogService {
     public void signIn(String message) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
         stringBuilder.append("] [SignIn] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
@@ -57,7 +60,7 @@ public class LogServiceImpl implements LogService {
     public void newUser(String message) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
-        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis() + TIMEZONE_CORRECTION_MILLISECONDS));
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
         stringBuilder.append("] [NewUser] ");
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());

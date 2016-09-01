@@ -6,9 +6,17 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 public class TestsUtil {
+
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final static long TIMEZONE_CORRECTION_MILLISECONDS = 7 * 60 * 60 * 1000;
+    static {
+//        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Etc/GMT+2"));
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+    }
 
     public static void main(String[] args) {
 
@@ -33,5 +41,7 @@ public class TestsUtil {
         long timeGoogle = Long.decode("1472655161548");
         System.out.println("facebook = " + (timeFacebook - System.currentTimeMillis()));
         System.out.println("google = " + (timeGoogle - System.currentTimeMillis()));
+
+        System.out.println(DATE_FORMAT.format(new Date()));
     }
 }
