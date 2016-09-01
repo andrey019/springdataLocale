@@ -91,6 +91,11 @@
             <a class="btn btn-block btn-social btn-google-plus" href="auth/google">
                 <span class="fa fa-google-plus"></span> Sign in with Google
             </a>
+        </div><br>
+        <div>
+            <a class="btn btn-block btn-social btn-linkedin" href="auth/linkedin">
+                <span class="fa fa-linkedin"></span> Sign in with LinkedIn
+            </a>
         </div>
     </form>
 

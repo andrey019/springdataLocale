@@ -18,6 +18,7 @@ import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 import javax.sql.DataSource;
@@ -30,6 +31,8 @@ public class SocialConfiguration implements SocialConfigurer {
     private final static String FACEBOOK_SECRET = "0ca404bdd6a11251f85a8253a2769267";
     private final static String GOOGLE_ID = "950741425322-tpqdvbo1cqr10i86st1poeve2udrjo3n.apps.googleusercontent.com";
     private final static String GOOGLE_SECRET = "72AGGEShd-DyY2WWLIIosskV";
+    private final static String LINKEDIN_ID = "78r50avtuljll0";
+    private final static String LINKEDIN_SECRET = "WlxsinHG4LnW5iBo";
 
 
     @Autowired
@@ -45,6 +48,9 @@ public class SocialConfiguration implements SocialConfigurer {
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_ID, GOOGLE_SECRET);
         googleConnectionFactory.setScope("email");
         connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
+
+        LinkedInConnectionFactory linkedInConnectionFactory = new LinkedInConnectionFactory(LINKEDIN_ID, LINKEDIN_SECRET);
+        connectionFactoryConfigurer.addConnectionFactory(linkedInConnectionFactory);
     }
 
     @Override

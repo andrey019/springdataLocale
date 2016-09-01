@@ -41,6 +41,7 @@
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
           <element id="library" level="project" name="Maven: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.social:spring-social-google:1.0.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.social:spring-social-linkedin:1.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
