@@ -49,16 +49,19 @@ public class UserController {
 
     @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
-    public String loadTodos(@RequestBody JsonMessage jsonMessage) {
+    public String loadTodos(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("loadTodos " + getUserEmail());
-        return todoService.getTodosByListId(getUserEmail(), jsonMessage.getListId());
+        System.out.println(jsonTodoList.getTimeZone());
+        return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
+                jsonTodoList.getTimeZone());
     }
 
     @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
-    public String loadDoneTodos(@RequestBody JsonMessage jsonMessage) {
+    public String loadDoneTodos(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("loadDoneTodos " + getUserEmail());
-        return todoService.getDoneTodosByListId(getUserEmail(), jsonMessage.getListId());
+        return todoService.getDoneTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
+                jsonTodoList.getTimeZone());
     }
 
     @RequestMapping(value = "/addTodo", method = RequestMethod.POST, produces = TEXT_UTF8)

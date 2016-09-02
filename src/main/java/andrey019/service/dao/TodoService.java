@@ -21,9 +21,9 @@ public interface TodoService {
 
     String getSharedWithInfo(String email, long todoListId);
 
-    String getTodosByListId(String email, long todoListId);
+    String getTodosByListId(String email, long todoListId, String timeZone);
 
-    String getDoneTodosByListId(String email, long todoListId);
+    String getDoneTodosByListId(String email, long todoListId, String timeZone);
 
     String getAllTodoLists(String email);
 }

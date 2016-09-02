@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
     loadLists();
+    setTimeZone();
 
     document.getElementById("profileButton").onclick = function(event) {
         event.preventDefault();
@@ -53,6 +54,17 @@ $(document).ready(function () {
         }
     };
 });
+
+function setTimeZone() {
+    var offset = -( (new Date().getTimezoneOffset()) / 60);
+    if ( (offset >= -12) && (offset < 0) ) {
+        window.timeZone = "GMT" + offset;
+    } else if ( (offset > 0) && (offset <= 12) ) {
+        window.timeZone = "GMT+" + offset;
+    } else {
+        window.timeZone = "GMT";
+    }
+}
 
 function onProfileClose() {
     document.getElementById("profileModal").style.display = "none";
@@ -221,13 +233,8 @@ function loadCurrentListTodos() {
     }
 
     var jsonCurrentListTodos = {
-        "listId": window.currentList.id.split("=")[1],
-        "todoId": 0,
-        "doneTodoId": 0,
-        "shareWith": null,
-        "unShareWith": 0,
-        "todoText": null,
-        "listName": null
+        "todoListId": window.currentList.id.split("=")[1],
+        "timeZone": window.timeZone
     };
 
     $.ajax({
@@ -266,13 +273,8 @@ function loadDoneTodos() {
     }
 
     var jsonDoneTodos = {
-        "listId": window.currentList.id.split("=")[1],
-        "todoId": 0,
-        "doneTodoId": 0,
-        "shareWith": null,
-        "unShareWith": 0,
-        "todoText": null,
-        "listName": null
+        "todoListId": window.currentList.id.split("=")[1],
+        "timeZone": window.timeZone
     };
 
     $.ajax({
@@ -477,7 +479,8 @@ function addTodoList() {
 function getDeleteInfo() {
     document.getElementById("delTodoListHeader").innerHTML = window.navbarText;
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1]
+        "todoListId": window.currentList.id.split("=")[1],
+        "timeZone": null
     };
 
     $.ajax({
@@ -507,7 +510,8 @@ function deleteTodoList() {
     }
 
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1]
+        "todoListId": window.currentList.id.split("=")[1],
+        "timeZone": null
     };
 
     $.ajax({
@@ -630,7 +634,8 @@ function unShareUser(event) {
 function getShareInfo() {
     document.getElementById("shareTodoListHeader").innerHTML = window.navbarText;
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1]
+        "todoListId": window.currentList.id.split("=")[1],
+        "timeZone": null
     };
 
     $.ajax({

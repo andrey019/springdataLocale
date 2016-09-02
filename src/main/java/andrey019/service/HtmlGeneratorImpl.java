@@ -6,8 +6,10 @@ import andrey019.model.dao.TodoList;
 import andrey019.model.dao.User;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 @Service("htmlGenerator")
 public class HtmlGeneratorImpl implements HtmlGenerator {
@@ -23,15 +25,18 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
     private final static String TODO_BUTTON_1 = "\" type=\"button\" class=\"list-group-item\" " +
             "onclick=\"doneTodo(event)\" style=\"word-wrap: break-word\">";
     private final static String TODO_BUTTON_2 = "<div style=\"font-size:11px; text-align: right\">Created by: ";
-    private final static String TODO_BUTTON_3 = ".</div></button>";
+    private final static String TODO_BUTTON_3 = ". At: ";
+    private final static String TODO_BUTTON_4 = ".</div></button>";
 
     private final static String DONE_TODO_BUTTON_0 = "<button id=\"done=";
     private final static String DONE_TODO_BUTTON_1 = "\" type=\"button\" class=\"list-group-item\" " +
             "onclick=\"unDoneTodo(event)\" style=\"word-wrap: break-word; background-color: lightgrey\"><s>";
     private final static String DONE_TODO_BUTTON_2 = "</s><div style=\"font-size:11px; " +
             "text-align: right\">Created by: ";
-    private final static String DONE_TODO_BUTTON_3 = ". Done by: ";
-    private final static String DONE_TODO_BUTTON_4 = ".</div></button>";
+    private final static String DONE_TODO_BUTTON_3 = ". At: ";
+    private final static String DONE_TODO_BUTTON_4 = ". Done by: ";
+    private final static String DONE_TODO_BUTTON_5 = ". At: ";
+    private final static String DONE_TODO_BUTTON_6 = ".</div></button>";
 
     private final static String LIST_INFO_0 = "<button type=\"button\" class=\"list-group-item " +
             "list-group-item-warning\" disabled>";
@@ -45,8 +50,9 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
     private final static String SHARE_INFO_4 = "</button>";
 
     private final static String NEW_LINE = "<br>";
-    private final static int MAX_SYMBOLS_IN_LINE = 17;
     private final static String EMPTY = "";
+    private final static String TIMEZONE_GMT = "GMT";
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     @Override
@@ -70,10 +76,11 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
     }
 
     @Override
-    public String generateTodosHtml(Set<Todo> todos) {
+    public String generateTodosHtml(Set<Todo> todos, String timeZone) {
         if (todos.isEmpty()) {
             return EMPTY;
         }
+        setTimeZone(timeZone);
         StringBuilder stringBuilder = new StringBuilder();
         for (Todo todo : todos) {
             stringBuilder.append(TODO_BUTTON_0);
@@ -83,15 +90,18 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
             stringBuilder.append(TODO_BUTTON_2);
             stringBuilder.append(todo.getCreatedByName());
             stringBuilder.append(TODO_BUTTON_3);
+            stringBuilder.append(dateFormat.format(todo.getCreated()));
+            stringBuilder.append(TODO_BUTTON_4);
         }
         return stringBuilder.toString();
     }
 
     @Override
-    public String generateDoneTodosHtml(Set<DoneTodo> doneTodos) {
+    public String generateDoneTodosHtml(Set<DoneTodo> doneTodos, String timeZone) {
         if (doneTodos.isEmpty()) {
             return EMPTY;
         }
+        setTimeZone(timeZone);
         StringBuilder stringBuilder = new StringBuilder();
         for (DoneTodo doneTodo : doneTodos) {
             stringBuilder.append(DONE_TODO_BUTTON_0);
@@ -101,8 +111,12 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
             stringBuilder.append(DONE_TODO_BUTTON_2);
             stringBuilder.append(doneTodo.getCreatedByName());
             stringBuilder.append(DONE_TODO_BUTTON_3);
-            stringBuilder.append(doneTodo.getDoneByName());
+            stringBuilder.append(dateFormat.format(doneTodo.getCreated()));
             stringBuilder.append(DONE_TODO_BUTTON_4);
+            stringBuilder.append(doneTodo.getDoneByName());
+            stringBuilder.append(DONE_TODO_BUTTON_5);
+            stringBuilder.append(dateFormat.format(doneTodo.getDone()));
+            stringBuilder.append(DONE_TODO_BUTTON_6);
         }
         return stringBuilder.toString();
     }
@@ -155,5 +169,20 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
         stringBuilder.append(NEW_LINE);
         stringBuilder.append(owner.getFullName());
         stringBuilder.append(SHARE_INFO_4);
+    }
+
+    private void setTimeZone(String timeZone) {
+        if (timeZone != null) {
+            dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+        }
+
+
+//        if ( (timeZone >= -12) && (timeZone < 0) ) {
+//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT + Integer.toString(timeZone)));
+//        } else if ( (timeZone > 0) && (timeZone <= 12) ) {
+//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT + "+" + Integer.toString(timeZone)));
+//        } else {
+//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT));
+//        }
     }
 }

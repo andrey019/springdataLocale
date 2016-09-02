@@ -13,9 +13,9 @@ public interface HtmlGenerator {
 
     String generateTodoListsHtml(Set<TodoList> todoLists);
 
-    String generateTodosHtml(Set<Todo> todos);
+    String generateTodosHtml(Set<Todo> todos, String timeZone);
 
-    String generateDoneTodosHtml(Set<DoneTodo> doneTodos);
+    String generateDoneTodosHtml(Set<DoneTodo> doneTodos, String timeZone);
 
     String generateTodoListsInfoHtml(List<User> users);
 

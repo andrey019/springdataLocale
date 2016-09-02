@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 @Service("todoService")
@@ -86,6 +87,7 @@ public class TodoServiceImpl implements TodoService {
         todo.setCreatedByEmail(user.getEmail());
         todo.setCreatedByName(user.getFullName());
         todo.setTodoText(todoText);
+        todo.setCreated(new Date());
         todoList.addTodo(todo);
         if (todoListRepository.save(todoList) == null) {
             return ERROR;
@@ -112,6 +114,7 @@ public class TodoServiceImpl implements TodoService {
         doneTodo.setFromTodo(todo);
         doneTodo.setDoneByEmail(user.getEmail());
         doneTodo.setDoneByName(user.getFullName());
+        doneTodo.setDone(new Date());
         todoList.addDoneTodo(doneTodo);
         todoList.removeTodo(todo);
         if (todoListRepository.save(todoList) == null) {
@@ -266,7 +269,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public String getTodosByListId(String email, long todoListId) {
+    public String getTodosByListId(String email, long todoListId, String timeZone) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
@@ -279,12 +282,12 @@ public class TodoServiceImpl implements TodoService {
             return null;
         }
         todoList.getTodos().size();
-        return htmlGenerator.generateTodosHtml(todoList.getTodos());
+        return htmlGenerator.generateTodosHtml(todoList.getTodos(), timeZone);
     }
 
     @Transactional
     @Override
-    public String getDoneTodosByListId(String email, long todoListId) {
+    public String getDoneTodosByListId(String email, long todoListId, String timeZone) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
@@ -297,7 +300,7 @@ public class TodoServiceImpl implements TodoService {
             return null;
         }
         todoList.getDoneTodos().size();
-        return htmlGenerator.generateDoneTodosHtml(todoList.getDoneTodos());
+        return htmlGenerator.generateDoneTodosHtml(todoList.getDoneTodos(), timeZone);
     }
 
     @Transactional

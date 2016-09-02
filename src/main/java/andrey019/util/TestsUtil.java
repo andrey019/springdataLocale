@@ -15,7 +15,7 @@ public class TestsUtil {
     private final static long TIMEZONE_CORRECTION_MILLISECONDS = 7 * 60 * 60 * 1000;
     static {
 //        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Etc/GMT+2"));
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMsdfT+3"));
     }
 
     public static void main(String[] args) {

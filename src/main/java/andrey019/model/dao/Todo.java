@@ -2,6 +2,7 @@ package andrey019.model.dao;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "todo")
@@ -24,6 +25,9 @@ public class Todo {
 
     @Column(name = "created_by_email", nullable = false)
     private String createdByEmail;
+
+    @Column(nullable = false)
+    private Date created;
 
     public long getId() {
         return id;
@@ -65,10 +69,19 @@ public class Todo {
         this.createdByEmail = createdByEmail;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
     public void setFromDoneTodo(DoneTodo doneTodo) {
         todoText = doneTodo.getTodoText();
         createdByEmail = doneTodo.getCreatedByEmail();
         createdByName = doneTodo.getCreatedByName();
+        created = doneTodo.getCreated();
     }
 
     @Override
