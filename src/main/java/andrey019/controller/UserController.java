@@ -51,7 +51,6 @@ public class UserController {
     @ResponseBody
     public String loadTodos(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("loadTodos " + getUserEmail());
-        System.out.println(jsonTodoList.getTimeZone());
         return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
                 jsonTodoList.getTimeZone());
     }
@@ -144,7 +143,7 @@ public class UserController {
     @ResponseBody
     public String findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
         logService.ajaxJson("findTodo " + getUserEmail() + " / " + jsonFindTodo.getRequest());
-        return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest());
+        return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest(), jsonFindTodo.getTimeZone());
     }
 
     private String getUserEmail(){

@@ -725,7 +725,8 @@ function findTodo() {
     }
 
     var jsonFindTodo = {
-        "request": document.getElementById("findTodoInput").value
+        "request": document.getElementById("findTodoInput").value,
+        "timeZone": window.timeZone
     };
 
     $.ajax({

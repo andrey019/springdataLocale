@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
 @Service("searchService")
 public class SearchServiceImpl implements SearchService {
 
@@ -20,7 +23,8 @@ public class SearchServiceImpl implements SearchService {
     private final static String TODO_BUTTON_2 = "\" type=\"button\" class=\"list-group-item\" " +
             "onclick=\"doneTodoFromSearch(event)\" style=\"word-wrap: break-word\">";
     private final static String TODO_BUTTON_3 = "<div style=\"font-size:11px; text-align: right\">Created by: ";
-    private final static String TODO_BUTTON_4 = ".</div></button>";
+    private final static String TODO_BUTTON_4 = ". At: ";
+    private final static String TODO_BUTTON_5 = ".</div></button>";
 
     private final static String LIST_BUTTON_0 = "<button id=\"list=";
     private final static String LIST_BUTTON_1 = "\" type=\"button\" class=\"btn btn-primary\" " +
@@ -31,22 +35,25 @@ public class SearchServiceImpl implements SearchService {
 
     private final static String NEW_LINE = "<br>";
     private final static String EMPTY = "";
+    private final static String DATE_FORMAT = "HH:mm:ss dd-MM-yyyy";
+    private final static String DEFAULT_TIMEZONE = "GMT";
 
     @Autowired
     private UserRepository userRepository;
 
     @Transactional
     @Override
-    public String findTodos(String email, String request) {
+    public String findTodos(String email, String request, String timeZone) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return EMPTY;
         }
-        return searchAndBuild(user, request);
+        return searchAndBuild(user, request, timeZone);
     }
 
-    private String searchAndBuild(User user, String request) {
+    private String searchAndBuild(User user, String request, String timeZone) {
         StringBuilder stringBuilder = new StringBuilder();
+        SimpleDateFormat dateFormatter = getDateFormatter(timeZone);
         boolean isFound = false;
         user.getSharedTodoLists().size();
         for (TodoList todoList : user.getSharedTodoLists()) {
@@ -57,7 +64,7 @@ public class SearchServiceImpl implements SearchService {
                         stringBuilder.append(TODO_GROUP_START);
                         isFound = true;
                     }
-                    addTodo(stringBuilder, todo);
+                    addTodo(stringBuilder, todo, dateFormatter);
                 }
             }
             if (isFound) {
@@ -69,7 +76,7 @@ public class SearchServiceImpl implements SearchService {
         return stringBuilder.toString();
     }
 
-    private void addTodo(StringBuilder stringBuilder, Todo todo) {
+    private void addTodo(StringBuilder stringBuilder, Todo todo, SimpleDateFormat dateFormatter) {
         stringBuilder.append(TODO_BUTTON_0);
         stringBuilder.append(todo.getId());
         stringBuilder.append(TODO_BUTTON_1);
@@ -79,6 +86,8 @@ public class SearchServiceImpl implements SearchService {
         stringBuilder.append(TODO_BUTTON_3);
         stringBuilder.append(todo.getCreatedByName());
         stringBuilder.append(TODO_BUTTON_4);
+        stringBuilder.append(dateFormatter.format(todo.getCreated()));
+        stringBuilder.append(TODO_BUTTON_5);
     }
 
     private void addListButton(StringBuilder stringBuilder, TodoList todoList) {
@@ -94,5 +103,15 @@ public class SearchServiceImpl implements SearchService {
         stringBuilder.append(NEW_LINE);
         stringBuilder.append(NEW_LINE);
         stringBuilder.append(NEW_LINE);
+    }
+
+    private SimpleDateFormat getDateFormatter(String timeZone) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        if (timeZone != null) {
+            dateFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
+        } else {
+            dateFormatter.setTimeZone(TimeZone.getTimeZone(DEFAULT_TIMEZONE));
+        }
+        return dateFormatter;
     }
 }

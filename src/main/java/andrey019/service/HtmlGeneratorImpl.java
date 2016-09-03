@@ -51,7 +51,8 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 
     private final static String NEW_LINE = "<br>";
     private final static String EMPTY = "";
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+    private final static String DATE_FORMAT = "HH:mm:ss dd-MM-yyyy";
+    private final static String DEFAULT_TIMEZONE = "GMT";
 
 
     @Override
@@ -79,7 +80,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
         if (todos.isEmpty()) {
             return EMPTY;
         }
-        setTimeZone(timeZone);
+        SimpleDateFormat dateFormatter = getDateFormatter(timeZone);
         StringBuilder stringBuilder = new StringBuilder();
         for (Todo todo : todos) {
             stringBuilder.append(TODO_BUTTON_0);
@@ -89,7 +90,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
             stringBuilder.append(TODO_BUTTON_2);
             stringBuilder.append(todo.getCreatedByName());
             stringBuilder.append(TODO_BUTTON_3);
-            stringBuilder.append(dateFormat.format(todo.getCreated()));
+            stringBuilder.append(dateFormatter.format(todo.getCreated()));
             stringBuilder.append(TODO_BUTTON_4);
         }
         return stringBuilder.toString();
@@ -100,7 +101,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
         if (doneTodos.isEmpty()) {
             return EMPTY;
         }
-        setTimeZone(timeZone);
+        SimpleDateFormat dateFormatter = getDateFormatter(timeZone);
         StringBuilder stringBuilder = new StringBuilder();
         for (DoneTodo doneTodo : doneTodos) {
             stringBuilder.append(DONE_TODO_BUTTON_0);
@@ -110,11 +111,11 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
             stringBuilder.append(DONE_TODO_BUTTON_2);
             stringBuilder.append(doneTodo.getCreatedByName());
             stringBuilder.append(DONE_TODO_BUTTON_3);
-            stringBuilder.append(dateFormat.format(doneTodo.getCreated()));
+            stringBuilder.append(dateFormatter.format(doneTodo.getCreated()));
             stringBuilder.append(DONE_TODO_BUTTON_4);
             stringBuilder.append(doneTodo.getDoneByName());
             stringBuilder.append(DONE_TODO_BUTTON_5);
-            stringBuilder.append(dateFormat.format(doneTodo.getDone()));
+            stringBuilder.append(dateFormatter.format(doneTodo.getDone()));
             stringBuilder.append(DONE_TODO_BUTTON_6);
         }
         return stringBuilder.toString();
@@ -170,9 +171,13 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
         stringBuilder.append(SHARE_INFO_4);
     }
 
-    private void setTimeZone(String timeZone) {
+    private SimpleDateFormat getDateFormatter(String timeZone) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
         if (timeZone != null) {
-            dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+            dateFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
+        } else {
+            dateFormatter.setTimeZone(TimeZone.getTimeZone(DEFAULT_TIMEZONE));
         }
+        return dateFormatter;
     }
 }
