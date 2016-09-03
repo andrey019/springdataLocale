@@ -11,7 +11,7 @@ import java.util.TimeZone;
 
 public class TestsUtil {
 
-    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
     private final static long TIMEZONE_CORRECTION_MILLISECONDS = 7 * 60 * 60 * 1000;
     static {
 //        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Etc/GMT+2"));

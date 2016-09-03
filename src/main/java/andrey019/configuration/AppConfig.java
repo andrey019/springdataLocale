@@ -5,6 +5,7 @@ import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,10 +16,9 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.annotation.PostConstruct;
 import java.util.Properties;
-import java.util.TimeZone;
 
 
-@org.springframework.context.annotation.Configuration
+@Configuration
 @ComponentScan("andrey019")
 @EnableWebMvc
 public class AppConfig extends WebMvcConfigurerAdapter {

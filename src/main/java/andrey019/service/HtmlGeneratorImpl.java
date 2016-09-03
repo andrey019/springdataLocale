@@ -51,8 +51,7 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
 
     private final static String NEW_LINE = "<br>";
     private final static String EMPTY = "";
-    private final static String TIMEZONE_GMT = "GMT";
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 
 
     @Override
@@ -175,14 +174,5 @@ public class HtmlGeneratorImpl implements HtmlGenerator {
         if (timeZone != null) {
             dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         }
-
-
-//        if ( (timeZone >= -12) && (timeZone < 0) ) {
-//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT + Integer.toString(timeZone)));
-//        } else if ( (timeZone > 0) && (timeZone <= 12) ) {
-//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT + "+" + Integer.toString(timeZone)));
-//        } else {
-//            dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_GMT));
-//        }
     }
 }
