@@ -23,4 +23,6 @@ public interface LiqPayApi {
      * signature - function result base64_encode( sha1( $private_key . $data . $private_key ) )
      */
     String cnb_form(Map<String, String> params);
+
+    boolean checkValidity(String data, String signature);
 }

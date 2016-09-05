@@ -4,16 +4,22 @@ package andrey019.LiqPay;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static andrey019.LiqPay.LiqPayUtil.base64_decode;
 import static andrey019.LiqPay.LiqPayUtil.base64_encode;
 import static andrey019.LiqPay.LiqPayUtil.sha1;
 
 
 public class LiqPay implements LiqPayApi {
+
     private final JSONParser parser = new JSONParser();
     private final String publicKey;
     private final String privateKey;
@@ -22,8 +28,7 @@ public class LiqPay implements LiqPayApi {
     private String proxyPassword;
     private boolean cnbSandbox;
     private boolean renderPayButton = true;
-//    protected List<String> supportedCurrencies = Arrays.asList("EUR", "UAH", "USD", "RUB", "GEL");
-//    protected List<String> supportedParams = Arrays.asList("public_key", "amount", "currency", "description", "order_id", "result_url", "server_url", "type", "signature", "language", "sandbox");
+
 
     public LiqPay(String publicKey, String privateKey) {
         this.publicKey = publicKey;
@@ -92,7 +97,8 @@ public class LiqPay implements LiqPayApi {
     @Override
     public Map<String, Object> api(String path, Map<String, String> params) throws Exception {
         Map<String, String> data = generateData(params);
-        String resp = LiqPayRequest.post(LIQPAY_API_URL + path, data, this.getProxyLogin(), this.getProxyPassword(), this.getProxy());
+        String resp = LiqPayRequest.post(LIQPAY_API_URL + path, data, this.getProxyLogin(), this.getProxyPassword(),
+                this.getProxy());
         JSONObject jsonObj = (JSONObject) parser.parse(resp);
         return LiqPayUtil.parseJson(jsonObj);
     }
@@ -136,7 +142,8 @@ public class LiqPay implements LiqPayApi {
         form += "<input type=\"hidden\" name=\"data\" value=\"" + data + "\" />\n";
         form += "<input type=\"hidden\" name=\"signature\" value=\"" + signature + "\" />\n";
         if (this.renderPayButton) {
-            form += "<input type=\"image\" src=\"https://static.liqpay.com/buttons/p1" + language + ".radius.png\" name=\"btn_text\" />\n";
+            form += "<input type=\"image\" src=\"https://static.liqpay.com/buttons/p1" + language +
+                    ".radius.png\" name=\"btn_text\" />\n";
         }
         form += "</form>\n";
         return form;
@@ -157,5 +164,40 @@ public class LiqPay implements LiqPayApi {
 
     protected String createSignature(String base64EncodedData) {
         return str_to_sign(privateKey + base64EncodedData + privateKey);
+    }
+
+    @Override
+    public boolean checkValidity(String data, String signature) {
+        if ( (data == null) || (signature == null) ) {
+            return false;
+        }
+
+        String sign = base64_decode(signature);
+
+        String signCheck = new String(sha1(privateKey + data + privateKey));
+        return sign.equals(signCheck);
+    }
+
+    public byte[] sha1(String param) {
+        try {
+            MessageDigest SHA = MessageDigest.getInstance("SHA-1");
+            SHA.reset();
+            SHA.update(param.getBytes("UTF-8"));
+            return SHA.digest();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't calc SHA-1 hash", e);
+        }
+    }
+
+    public String base64_encode(byte[] bytes) {
+        return DatatypeConverter.printBase64Binary(bytes);
+    }
+
+    public String base64_encode(String data) {
+        return base64_encode(data.getBytes());
+    }
+
+    public String base64_decode(String data) {
+        return new String(DatatypeConverter.parseBase64Binary(data));
     }
 }

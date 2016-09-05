@@ -1,5 +1,6 @@
 package andrey019.configuration;
 
+import andrey019.LiqPay.LiqPay;
 import andrey019.service.maintenance.ConfirmationCleanUpService;
 import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -27,6 +28,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     private void servicesInit() {
         MailSenderService.getInstance().start();
         ConfirmationCleanUpService.getInstance().start();
+    }
+
+    @Bean
+    public LiqPay getLiqPay() {
+        return new LiqPay("i31942280773", "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw");
     }
 
     @Bean

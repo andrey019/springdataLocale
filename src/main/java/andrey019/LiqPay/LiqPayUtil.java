@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class LiqPayUtil {
+
     public static byte[] sha1(String param) {
         try {
             MessageDigest SHA = MessageDigest.getInstance("SHA-1");
