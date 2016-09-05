@@ -78,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS).alwaysRemember(true)
-                .and().csrf()
+                .and().csrf().ignoringAntMatchers("/payment/**")
                 .and().exceptionHandling().accessDeniedPage("/auth/accessDenied");
 
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
