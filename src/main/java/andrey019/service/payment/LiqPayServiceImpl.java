@@ -104,9 +104,9 @@ public class LiqPayServiceImpl implements LiqPayService {
         }
         user.addDonation(donation);
         if (userRepository.save(user) == null) {
-            donationWaitRepository.delete(donationWait.getId());
             return false;
         }
+        donationWaitRepository.delete(donationWait.getId());
         logService.donation(user.getEmail() + ", amount = " + donation.getAmount() + " " + donation.getCurrency());
         return true;
     }
