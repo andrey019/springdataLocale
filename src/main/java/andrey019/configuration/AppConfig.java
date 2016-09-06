@@ -1,6 +1,7 @@
 package andrey019.configuration;
 
 import andrey019.LiqPay.LiqPay;
+import andrey019.LiqPay.LiqPayApi;
 import andrey019.service.maintenance.ConfirmationCleanUpService;
 import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -31,8 +32,9 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public LiqPay getLiqPay() {
-        return new LiqPay("i31942280773", "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw");
+    public LiqPayApi getLiqPay() {
+        return new LiqPay("i31942280773", "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw",
+                "https://social-andrey019.rhcloud.com/payment/liqpay");
     }
 
     @Bean

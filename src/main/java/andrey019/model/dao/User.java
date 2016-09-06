@@ -34,6 +34,10 @@ public class User {
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.MERGE})
     private Set<TodoList> sharedTodoLists = new HashSet<>();
 
+    @OrderBy("id DESC")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Donation> donations = new HashSet<>();
+
     @Column(nullable = false)
     private String state = State.ACTIVE.getState();
 
@@ -89,6 +93,14 @@ public class User {
 
     public void setTodoLists(Set<TodoList> todoLists) {
         this.todoLists = todoLists;
+    }
+
+    public Set<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(Set<Donation> donations) {
+        this.donations = donations;
     }
 
     public Set<TodoList> getSharedTodoLists() {
@@ -153,6 +165,15 @@ public class User {
 
     public void removeTodoList(TodoList todoList) {
         todoLists.remove(todoList);
+    }
+
+    public void addDonation(Donation donation) {
+        donation.setUser(this);
+        donations.add(donation);
+    }
+
+    public void removeDonation(Donation donation) {
+        donations.remove(donation);
     }
 
     public void addSharedTodoList(TodoList todoList) {

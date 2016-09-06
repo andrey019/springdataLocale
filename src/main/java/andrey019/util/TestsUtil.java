@@ -28,6 +28,7 @@ public class TestsUtil {
 
     private final static String LIQPAY_PUBLIC_KEY = "i31942280773";
     private final static String LIQPAY_PRIVATE_KEY = "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw";
+    private final static String LIQPAY_CALLBACK_URL = "https://social-andrey019.rhcloud.com/payment/liqpay";
 
     static {
 //        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Etc/GMT+2"));
@@ -60,17 +61,17 @@ public class TestsUtil {
 
         System.out.println(DATE_FORMAT.format(new Date()));
 
-//        HashMap params = new HashMap();
-//        params.put("action", "pay");
-//        params.put("amount", "1");
-//        params.put("currency", "UAH");
-//        params.put("description", "description text");
-//        params.put("order_id", "order_id_7");
-//        params.put("language", "en");
-//        params.put("server_url", "https://social-andrey019.rhcloud.com/payment/liqpay");
-        LiqPay liqpay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY);
-//        liqpay.setCnbSandbox(true);
-//        System.out.println(liqpay.cnb_form(params));
+        HashMap params = new HashMap();
+        params.put("action", "pay");
+        params.put("amount", "1");
+        params.put("currency", "UAH");
+        params.put("description", "description text");
+        params.put("order_id", "order_id_11");
+        params.put("language", "en");
+        params.put("server_url", "https://social-andrey019.rhcloud.com/payment/liqpay");
+        LiqPay liqpay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY, LIQPAY_CALLBACK_URL);
+        liqpay.setCnbSandbox(true);
+        System.out.println(liqpay.cnb_form(params));
 
 
         String data = "eyJhY3Rpb24iOiJwYXkiLCJwYXltZW50X2lkIjoyMzg2MzA4MzAsInN0YXR1cyI6InNhbmRib" +
@@ -107,6 +108,11 @@ public class TestsUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        double numb = 0.153435;
+        numb = ((double) Math.round(numb * 100)) / 100;
+        System.out.println(numb);
 
 //        String signature = "1p9KrdIxZ1bsL3IrSk8InTm3Uoo=";
 //        LiqPay liqPay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY);

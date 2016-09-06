@@ -65,4 +65,14 @@ public class LogServiceImpl implements LogService {
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
     }
+
+    @Override
+    public void donation(String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
+        stringBuilder.append("] [Donation] ");
+        stringBuilder.append(message);
+        System.out.println(stringBuilder.toString());
+    }
 }

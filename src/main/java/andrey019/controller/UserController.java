@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -35,8 +37,8 @@ public class UserController {
 
 
     @RequestMapping(value = {"/", ""}, method = RequestMethod.GET)
-    public String userPage() {
-        logService.accessToPage("user (user_page)");
+    public String userPage(HttpServletRequest request) {
+        logService.accessToPage("user (user_page) " + getUserEmail() + ", ip = " + request.getRemoteAddr());
         return "user_page";
     }
 

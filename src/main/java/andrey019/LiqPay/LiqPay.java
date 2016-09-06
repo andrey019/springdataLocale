@@ -2,46 +2,27 @@ package andrey019.LiqPay;
 
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.UnsupportedEncodingException;
-import java.net.Proxy;
 import java.security.MessageDigest;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static andrey019.LiqPay.LiqPayUtil.base64_decode;
-import static andrey019.LiqPay.LiqPayUtil.base64_encode;
-import static andrey019.LiqPay.LiqPayUtil.sha1;
-
 
 public class LiqPay implements LiqPayApi {
 
-    private final JSONParser parser = new JSONParser();
     private final String publicKey;
     private final String privateKey;
-    private Proxy proxy;
-    private String proxyLogin;
-    private String proxyPassword;
+    private final String callbackUrl;
     private boolean cnbSandbox;
     private boolean renderPayButton = true;
 
 
-    public LiqPay(String publicKey, String privateKey) {
+    public LiqPay(String publicKey, String privateKey, String callbackUrl) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
-        checkRequired();
-    }
-
-    public LiqPay(String publicKey, String privateKey, Proxy proxy, String proxyLogin, String proxyPassword) {
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
-        this.proxy = proxy;
-        this.proxyLogin = proxyLogin;
-        this.proxyPassword = proxyPassword;
+        this.callbackUrl = callbackUrl;
         checkRequired();
     }
 
@@ -52,30 +33,9 @@ public class LiqPay implements LiqPayApi {
         if (this.privateKey == null || this.privateKey.isEmpty()) {
             throw new IllegalArgumentException("privateKey is empty");
         }
-    }
-
-    public void setProxy(Proxy proxy) {
-        this.proxy = proxy;
-    }
-
-    public Proxy getProxy() {
-        return proxy;
-    }
-
-    public String getProxyLogin() {
-        return proxyLogin;
-    }
-
-    public String getProxyPassword() {
-        return proxyPassword;
-    }
-
-    public void setProxyLogin(String proxyLogin) {
-        this.proxyLogin = proxyLogin;
-    }
-
-    public void setProxyPassword(String proxyPassword) {
-        this.proxyPassword = proxyPassword;
+        if (this.callbackUrl == null || this.callbackUrl.isEmpty()) {
+            throw new IllegalArgumentException("callbackUrl is empty");
+        }
     }
 
     public boolean isCnbSandbox() {
@@ -92,23 +52,6 @@ public class LiqPay implements LiqPayApi {
 
     public void setRenderPayButton(boolean renderPayButton) {
         this.renderPayButton = renderPayButton;
-    }
-
-    @Override
-    public Map<String, Object> api(String path, Map<String, String> params) throws Exception {
-        Map<String, String> data = generateData(params);
-        String resp = LiqPayRequest.post(LIQPAY_API_URL + path, data, this.getProxyLogin(), this.getProxyPassword(),
-                this.getProxy());
-        JSONObject jsonObj = (JSONObject) parser.parse(resp);
-        return LiqPayUtil.parseJson(jsonObj);
-    }
-
-    protected Map<String, String> generateData(Map<String, String> params) {
-        HashMap<String, String> apiData = new HashMap<>();
-        String data = base64_encode(JSONObject.toJSONString(withBasicApiParams(params)));
-        apiData.put("data", data);
-        apiData.put("signature", createSignature(data));
-        return apiData;
     }
 
     protected TreeMap<String, String> withBasicApiParams(Map<String, String> params) {
@@ -137,16 +80,23 @@ public class LiqPay implements LiqPayApi {
     }
 
     private String renderHtmlForm(String data, String language, String signature) {
-        String form = "";
-        form += "<form method=\"post\" action=\"" + LIQPAY_API_CHECKOUT_URL + "\" accept-charset=\"utf-8\">\n";
-        form += "<input type=\"hidden\" name=\"data\" value=\"" + data + "\" />\n";
-        form += "<input type=\"hidden\" name=\"signature\" value=\"" + signature + "\" />\n";
+        StringBuilder form = new StringBuilder();
+        form.append("<form id=\"donateForm\" method=\"post\" action=\"");
+        form.append(LIQPAY_API_CHECKOUT_URL);
+        form.append("\" accept-charset=\"utf-8\">\n");
+        form.append("<input type=\"hidden\" name=\"data\" value=\"");
+        form.append(data);
+        form.append("\" />\n");
+        form.append("<input type=\"hidden\" name=\"signature\" value=\"");
+        form.append(signature);
+        form.append("\" />\n");
         if (this.renderPayButton) {
-            form += "<input type=\"image\" src=\"https://static.liqpay.com/buttons/p1" + language +
-                    ".radius.png\" name=\"btn_text\" />\n";
+            form.append("<input id=\"donateButton\" type=\"image\" src=\"https://static.liqpay.com/buttons/p1");
+            form.append(language);
+            form.append(".radius.png\" name=\"btn_text\" />\n");
         }
-        form += "</form>\n";
-        return form;
+        form.append("</form>\n");
+        return form.toString();
     }
 
     protected void checkCnbParams(Map<String, String> params) {
@@ -171,11 +121,21 @@ public class LiqPay implements LiqPayApi {
         if ( (data == null) || (signature == null) ) {
             return false;
         }
-
         String sign = base64_decode(signature);
-
         String signCheck = new String(sha1(privateKey + data + privateKey));
         return sign.equals(signCheck);
+    }
+
+    @Override
+    public String generateDonationForm(String orderId, double amount) {
+        HashMap params = new HashMap();
+        params.put("action", "pay");
+        params.put("amount", Double.toString(amount));
+        params.put("currency", "UAH");
+        params.put("description", "donation");
+        params.put("order_id", orderId);
+        params.put("server_url", callbackUrl);
+        return cnb_form(params);
     }
 
     public byte[] sha1(String param) {
@@ -197,6 +157,7 @@ public class LiqPay implements LiqPayApi {
         return base64_encode(data.getBytes());
     }
 
+    @Override
     public String base64_decode(String data) {
         return new String(DatatypeConverter.parseBase64Binary(data));
     }
