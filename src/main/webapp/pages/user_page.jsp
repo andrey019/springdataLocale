@@ -16,9 +16,9 @@
         <title>WunderWaffel ${username}</title>
     </sec:authorize>
 </head>
-<body style="background: url('/resources/images/background2.jpg'); background-attachment: fixed; background-size: cover; min-width: 1100px">
+<body style="background: url('/resources/images/background2.jpg'); background-attachment: fixed; background-size: cover">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" style="color: #3e8f3e; min-width: 1100px">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="color: #3e8f3e">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
