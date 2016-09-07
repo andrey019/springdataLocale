@@ -1,7 +1,5 @@
 
 $(document).ready(function () {
-    loadLists();
-    setTimeZone();
 
     document.getElementById("profileButton").onclick = function(event) {
         event.preventDefault();
@@ -42,6 +40,17 @@ $(document).ready(function () {
         onShareClose();
     };
 
+    document.getElementById("donateModalButton").onclick = function(event) {
+        event.preventDefault();
+        $("#addTodoDiv").hide();
+        document.getElementById("donateModal").style.display = "block";
+        donationInfo();
+    };
+
+    document.getElementById("donateCloseSpan").onclick = function() {
+        onDonateClose();
+    };
+
     window.onclick = function(event) {
         if (event.target == document.getElementById("profileModal")) {
             onProfileClose();
@@ -52,7 +61,13 @@ $(document).ready(function () {
         if (event.target == document.getElementById("shareModal")) {
             onShareClose();
         }
+        if (event.target == document.getElementById("donateModal")) {
+            onDonateClose();
+        }
     };
+
+    setTimeZone();
+    loadLists();
 });
 
 function setTimeZone() {
@@ -99,6 +114,15 @@ function onShareClose() {
     $("#unShareSuccess").hide();
     $("#unShareError").hide();
     document.getElementById("sharedUsers").innerHTML = "";
+}
+
+function onDonateClose() {
+    document.getElementById("donateModal").style.display = "none";
+    $("#addTodoDiv").show();
+    document.getElementById("donateHeader").innerHTML = "";
+    document.getElementById("donateInput").value = "";
+    $("#donateError").hide();
+    $("#donateInputError").hide();
 }
 
 function addTodoInputEnter(event) {
@@ -743,6 +767,60 @@ function findTodo() {
             document.getElementById("searchResult").innerHTML = data;
             document.getElementById(window.currentList.id).className = "list-group-item";
             window.currentList = null;
+        },
+        error: function (jqXHR, exception) {
+            jsonErrorHandler(jqXHR, exception);
+        }
+    });
+}
+
+function donate() {
+    $("#donateError").hide();
+    if (document.getElementById("donateInput").value == "" ||
+        isNaN(document.getElementById("donateInput").value) ||
+        document.getElementById("donateInput").value < 5) {
+        $("#donateInputError").show();
+        return;
+    }
+    $("#donateInputError").hide();
+
+    var donation = {
+        "amount": document.getElementById("donateInput").value
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/payment/liqpayRequest",
+        data: JSON.stringify(donation),
+        contentType: 'application/json',
+        headers: getCSRFHeader(),
+        success: function (data) {
+            if (data != "error") {
+                document.getElementById("donateFormContainer").innerHTML = data;
+                document.getElementById("donateForm").submit();
+            } else {
+                $("#donateError").show();
+            }
+        },
+        error: function (jqXHR, exception) {
+            jsonErrorHandler(jqXHR, exception);
+        }
+    });
+}
+
+function donationInfo() {
+    $.ajax({
+        type: "POST",
+        url: "/user/donationInfo",
+        data: null,
+        contentType: 'application/json',
+        headers: getCSRFHeader(),
+        success: function (data) {
+            if (data != "error") {
+                document.getElementById("donateHeader").innerHTML = "Already donated " + data + " UAH";
+            } else {
+                document.getElementById("donateHeader").innerHTML = "";
+            }
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);

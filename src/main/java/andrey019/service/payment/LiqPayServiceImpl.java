@@ -35,9 +35,6 @@ public class LiqPayServiceImpl implements LiqPayService {
     @Autowired
     private LiqPayApi liqPayApi;
 
-    @Autowired
-    private LogService logService;
-
 
     @Override
     public String generateDonation(String userEmail, double amount) {
@@ -45,8 +42,8 @@ public class LiqPayServiceImpl implements LiqPayService {
         if (user == null) {
             return ERROR;
         }
-        amount = correctAmount(amount);
-        if (amount == -1) {
+        amount = ((double) Math.round(amount * 100)) / 100;
+        if (amount < 5) {
             return ERROR;
         }
         String orderId = generateOrderId();
@@ -61,17 +58,10 @@ public class LiqPayServiceImpl implements LiqPayService {
         return liqPayApi.generateDonationForm(orderId, amount);
     }
 
-    private double correctAmount(double amount) {
-        if (amount < 1) {
-            return -1;
-        }
-        return ((double) Math.round(amount * 100)) / 100;
-    }
-
     private String generateOrderId() {
         String orderId = null;
         while (orderId == null) {
-            orderId = RandomStringUtils.random(20, true, true);
+            orderId = RandomStringUtils.random(10, true, true);
             if ( (donationWaitRepository.findByOrderId(orderId) != null) ||
                     (donationRepository.findByOrderId(orderId) != null) ) {
                 orderId = null;
@@ -82,33 +72,43 @@ public class LiqPayServiceImpl implements LiqPayService {
 
     @Transactional
     @Override
-    public boolean donationConfirm(String data, String signature) {
+    public String donationConfirm(String data, String signature) {
         if (!liqPayApi.checkValidity(data, signature)) {
-            return false;
+            return "validity check fail";
         }
         JsonNode jsonNode = getJson(data);
         if (jsonNode == null) {
-            return false;
+            return "json parse error";
+        }
+        if (donationRepository.findByOrderId(jsonNode.get("order_id").textValue()) != null) {
+            return "already processed: order_id = " + jsonNode.get("order_id").textValue();
         }
         DonationWait donationWait = donationWaitRepository.findByOrderId(jsonNode.get("order_id").textValue());
         if (donationWait == null) {
-            return false;
+            return "no initial request: order_id = " + jsonNode.get("order_id").textValue();
         }
         User user = userRepository.findByEmail(donationWait.getUserEmail());
         if (user == null) {
-            return false;
+            return "user not found: " + donationWait.getUserEmail() +
+                    ", order_id = " + jsonNode.get("order_id").textValue();
         }
         Donation donation = getDonation(jsonNode, user);
-        if ( (donation == null) || (donation.getAmount() != donationWait.getAmount())) {
-            return false;
+        if (donation == null) {
+            return "donation parse error: order_id = " + jsonNode.get("order_id").textValue();
+        }
+        if (donation.getAmount() != donationWait.getAmount()) {
+            return "donation amount not equals: initial = " + donationWait.getAmount() +
+                    ", final = " + donation.getAmount() + ", " + donationWait.getUserEmail() +
+                    ", order_id = " + jsonNode.get("order_id").textValue();
         }
         user.addDonation(donation);
         if (userRepository.save(user) == null) {
-            return false;
+            return "donation save error: " + donationWait.getUserEmail() +
+                    ", order_id = " + jsonNode.get("order_id").textValue();
         }
         donationWaitRepository.delete(donationWait.getId());
-        logService.donation(user.getEmail() + ", amount = " + donation.getAmount() + " " + donation.getCurrency());
-        return true;
+        return "success: " + user.getEmail() + ", order_id = " + donation.getOrderId() +
+                ", amount = " + donation.getAmount() + " " + donation.getCurrency();
     }
 
     private JsonNode getJson(String data) {

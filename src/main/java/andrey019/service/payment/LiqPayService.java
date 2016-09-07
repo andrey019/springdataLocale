@@ -5,5 +5,5 @@ public interface LiqPayService {
 
     String generateDonation(String userEmail, double amount);
 
-    boolean donationConfirm(String data, String signature);
+    String donationConfirm(String data, String signature);
 }

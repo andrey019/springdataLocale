@@ -26,4 +26,6 @@ public interface TodoService {
     String getDoneTodosByListId(String email, long todoListId, String timeZone);
 
     String getAllTodoLists(String email);
+
+    String getDonationInfo(String email);
 }

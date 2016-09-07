@@ -16,9 +16,9 @@
         <title>WunderWaffel ${username}</title>
     </sec:authorize>
 </head>
-<body style="background: url('/resources/images/background2.jpg'); background-attachment: fixed; background-size: cover">
+<body style="background: url('/resources/images/background2.jpg'); background-attachment: fixed; background-size: cover; min-width: 1100px">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" style="color: #3e8f3e">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="color: #3e8f3e; min-width: 1100px">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -31,6 +31,7 @@
         <form class="navbar-form navbar-right" style="padding-right: 30px" action="/auth/logout">
             <button onclick="refresh(event)" type="submit" class="btn btn-info">Refresh</button>
             <button id="profileButton" type="submit" class="btn btn-info">Profile</button>
+            <button id="donateModalButton" type="submit" class="btn btn-info">Donate</button>
             <button type="submit" class="btn btn-info">Sign Out</button>
         </form>
     </div>
@@ -217,6 +218,29 @@
         <div hidden id="unShareError" class="alert alert-danger" role="alert">
             <p id="unShareErrorText"></p>
         </div>
+    </div>
+</div>
+
+
+<div id="donateModal" class="modal">
+    <div class="modal-content">
+        <span id="donateCloseSpan" class="close">×</span><br>
+        <p id="donateHeader" style="font-size: 130%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center">Already donated 999 UAH</p>
+        <p>You can donate money with your credit card</p>
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
+            <input id="donateInput" type="number" class="form-control" placeholder="5 UAH minimum" aria-describedby="basic-addon1" required>
+        </div>
+        <div hidden id="donateInputError" class="alert alert-danger" role="alert">
+            <p id="donateInputErrorText">Wrong value!</p>
+        </div>
+        <br>
+        <button id="donateButton" type="button" onclick="donate()" class="btn btn-success" style="width: 100%">Donate</button>
+        <br>
+        <div hidden id="donateError" class="alert alert-danger" role="alert">
+            <p id="donateErrorText">Error occurred!</p>
+        </div>
+        <div hidden id="donateFormContainer"></div>
     </div>
 </div>
 

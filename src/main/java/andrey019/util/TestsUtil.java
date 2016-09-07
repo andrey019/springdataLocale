@@ -66,11 +66,13 @@ public class TestsUtil {
         params.put("amount", "1");
         params.put("currency", "UAH");
         params.put("description", "description text");
-        params.put("order_id", "order_id_13");
+        params.put("order_id", "order_id_15");
         params.put("language", "en");
         params.put("server_url", "https://social-andrey019.rhcloud.com/payment/liqpay");
+        params.put("result_url", "https://social-andrey019.rhcloud.com/user");
         LiqPay liqpay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY, LIQPAY_CALLBACK_URL);
         liqpay.setCnbSandbox(true);
+        liqpay.setRenderPayButton(true);
         System.out.println(liqpay.cnb_form(params));
 
 

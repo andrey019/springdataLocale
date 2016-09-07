@@ -148,6 +148,13 @@ public class UserController {
         return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest(), jsonFindTodo.getTimeZone());
     }
 
+    @RequestMapping(value = "/donationInfo", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @ResponseBody
+    public String findTodo() {
+        logService.ajaxJson("donationInfo " + getUserEmail());
+        return todoService.getDonationInfo(getUserEmail());
+    }
+
     private String getUserEmail(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -72,13 +72,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "favicon.ico").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/user/**").access("hasRole('ADMIN') or hasRole('USER')")
+                .antMatchers("/user/**", "/payment/liqpayRequest").access("hasRole('ADMIN') or hasRole('USER')")
                 .and().apply(new SpringSocialConfigurer())
                 .and().formLogin().loginPage("/").successHandler(customSuccessHandler)
                 .usernameParameter("email").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(REMEMBER_ME_VALIDITY_SECONDS).alwaysRemember(true)
-                .and().csrf().ignoringAntMatchers("/payment/**")
+                .and().csrf().ignoringAntMatchers("/payment/liqpay")
                 .and().exceptionHandling().accessDeniedPage("/auth/accessDenied");
 
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
@@ -100,5 +100,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         tokenRepositoryImpl.setDataSource(dataSource);
         return tokenRepositoryImpl;
     }
-
 }

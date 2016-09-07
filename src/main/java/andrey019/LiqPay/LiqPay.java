@@ -7,7 +7,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 public class LiqPay implements LiqPayApi {
@@ -15,8 +14,8 @@ public class LiqPay implements LiqPayApi {
     private final String publicKey;
     private final String privateKey;
     private final String callbackUrl;
-    private boolean cnbSandbox;
-    private boolean renderPayButton = true;
+    private boolean cnbSandbox = true;
+    private boolean renderPayButton;
 
 
     public LiqPay(String publicKey, String privateKey, String callbackUrl) {
@@ -54,18 +53,16 @@ public class LiqPay implements LiqPayApi {
         this.renderPayButton = renderPayButton;
     }
 
-    protected TreeMap<String, String> withBasicApiParams(Map<String, String> params) {
-        TreeMap<String, String> tm = new TreeMap<>(params);
-        tm.put("public_key", publicKey);
-        tm.put("version", API_VERSION);
-        return tm;
+    protected Map<String, String> withBasicApiParams(Map<String, String> params) {
+        params.put("public_key", publicKey);
+        params.put("version", API_VERSION);
+        return params;
     }
 
-    protected TreeMap<String, String> withSandboxParam(TreeMap<String, String> params) {
+    protected Map<String, String> withSandboxParam(Map<String, String> params) {
         if (params.get("sandbox") == null && isCnbSandbox()) {
-            TreeMap<String, String> tm = new TreeMap<>(params);
-            tm.put("sandbox", "1");
-            return tm;
+            params.put("sandbox", "1");
+            return params;
         }
         return params;
     }
@@ -128,7 +125,7 @@ public class LiqPay implements LiqPayApi {
 
     @Override
     public String generateDonationForm(String orderId, double amount) {
-        HashMap params = new HashMap();
+        Map params = new HashMap();
         params.put("action", "pay");
         params.put("amount", Double.toString(amount));
         params.put("currency", "UAH");

@@ -1,10 +1,7 @@
 package andrey019.service.dao;
 
 
-import andrey019.model.dao.DoneTodo;
-import andrey019.model.dao.Todo;
-import andrey019.model.dao.TodoList;
-import andrey019.model.dao.User;
+import andrey019.model.dao.*;
 import andrey019.repository.DoneTodoRepository;
 import andrey019.repository.TodoListRepository;
 import andrey019.repository.TodoRepository;
@@ -312,5 +309,20 @@ public class TodoServiceImpl implements TodoService {
         }
         user.getSharedTodoLists().size();
         return htmlGenerator.generateTodoListsHtml(user.getSharedTodoLists());
+    }
+
+    @Transactional
+    @Override
+    public String getDonationInfo(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ERROR;
+        }
+        user.getDonations().size();
+        double amount = 0;
+        for (Donation donation : user.getDonations()) {
+            amount += donation.getAmount();
+        }
+        return Double.toString(amount);
     }
 }
