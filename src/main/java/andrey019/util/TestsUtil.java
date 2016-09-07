@@ -29,6 +29,7 @@ public class TestsUtil {
     private final static String LIQPAY_PUBLIC_KEY = "i31942280773";
     private final static String LIQPAY_PRIVATE_KEY = "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw";
     private final static String LIQPAY_CALLBACK_URL = "https://social-andrey019.rhcloud.com/payment/liqpay";
+    private final static String LIQPAY_RESULT_URL = "https://social-andrey019.rhcloud.com/user";
 
     static {
 //        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Etc/GMT+2"));
@@ -70,7 +71,7 @@ public class TestsUtil {
         params.put("language", "en");
         params.put("server_url", "https://social-andrey019.rhcloud.com/payment/liqpay");
         params.put("result_url", "https://social-andrey019.rhcloud.com/user");
-        LiqPay liqpay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY, LIQPAY_CALLBACK_URL);
+        LiqPay liqpay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY, LIQPAY_CALLBACK_URL, LIQPAY_RESULT_URL);
         liqpay.setCnbSandbox(true);
         liqpay.setRenderPayButton(true);
         System.out.println(liqpay.cnb_form(params));

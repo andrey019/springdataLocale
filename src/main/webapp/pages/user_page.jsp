@@ -29,9 +29,9 @@
 
         <p id="navbarText" class="navbar-text" style="font-size: 115%; padding-left: 145px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></p>
         <form class="navbar-form navbar-right" style="padding-right: 30px" action="/auth/logout">
-            <button onclick="refresh(event)" type="submit" class="btn btn-info">Refresh</button>
-            <button id="profileButton" type="submit" class="btn btn-info">Profile</button>
-            <button id="donateModalButton" type="submit" class="btn btn-info">Donate</button>
+            <button onclick="refresh()" type="button" class="btn btn-info">Refresh</button>
+            <button id="profileButton" type="button" class="btn btn-info">Profile</button>
+            <button id="donateModalButton" type="button" class="btn btn-info">Donate</button>
             <button type="submit" class="btn btn-info">Sign Out</button>
         </form>
     </div>
@@ -229,7 +229,7 @@
         <p>You can donate money with your credit card</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="donateInput" type="number" class="form-control" placeholder="5 UAH minimum" aria-describedby="basic-addon1" required>
+            <input id="donateInput" type="number" class="form-control" placeholder="1 UAH minimum" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="donateInputError" class="alert alert-danger" role="alert">
             <p id="donateInputErrorText">Wrong value!</p>

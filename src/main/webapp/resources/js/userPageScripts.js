@@ -1,8 +1,7 @@
 
 $(document).ready(function () {
 
-    document.getElementById("profileButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("profileButton").onclick = function() {
         $("#addTodoDiv").hide();
         document.getElementById("profileModal").style.display = "block";
         getProfile();
@@ -12,8 +11,7 @@ $(document).ready(function () {
         onProfileClose();
     };
 
-    document.getElementById("deleteModalButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("deleteModalButton").onclick = function() {
         if (typeof window.currentList === 'undefined' || window.currentList == null) {
             return;
         }
@@ -26,8 +24,7 @@ $(document).ready(function () {
         onDeleteClose();
     };
 
-    document.getElementById("shareModalButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("shareModalButton").onclick = function() {
         if (typeof window.currentList === 'undefined' || window.currentList == null) {
             return;
         }
@@ -40,8 +37,7 @@ $(document).ready(function () {
         onShareClose();
     };
 
-    document.getElementById("donateModalButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("donateModalButton").onclick = function() {
         $("#addTodoDiv").hide();
         document.getElementById("donateModal").style.display = "block";
         donationInfo();
@@ -163,8 +159,7 @@ function showDoneTodosClick() {
     loadDoneTodos();
 }
 
-function refresh(event) {
-    event.preventDefault();
+function refresh() {
     loadLists();
 }
 
@@ -778,7 +773,7 @@ function donate() {
     $("#donateError").hide();
     if (document.getElementById("donateInput").value == "" ||
         isNaN(document.getElementById("donateInput").value) ||
-        document.getElementById("donateInput").value < 5) {
+        document.getElementById("donateInput").value < 1) {
         $("#donateInputError").show();
         return;
     }

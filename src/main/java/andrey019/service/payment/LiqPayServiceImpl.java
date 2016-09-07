@@ -43,7 +43,7 @@ public class LiqPayServiceImpl implements LiqPayService {
             return ERROR;
         }
         amount = ((double) Math.round(amount * 100)) / 100;
-        if (amount < 5) {
+        if (amount < 1) {
             return ERROR;
         }
         String orderId = generateOrderId();
@@ -96,18 +96,23 @@ public class LiqPayServiceImpl implements LiqPayService {
         if (donation == null) {
             return "donation parse error: order_id = " + jsonNode.get("order_id").textValue();
         }
+        if (!donation.getStatus().equalsIgnoreCase("success")) {
+            return "donation status: " + donation.getStatus() + ", " + donationWait.getUserEmail() +
+                    ", order_id = " + donation.getOrderId() + ", payment_id = " + donation.getPaymentId();
+        }
         if (donation.getAmount() != donationWait.getAmount()) {
             return "donation amount not equals: initial = " + donationWait.getAmount() +
                     ", final = " + donation.getAmount() + ", " + donationWait.getUserEmail() +
-                    ", order_id = " + jsonNode.get("order_id").textValue();
+                    ", order_id = " + donation.getOrderId();
         }
         user.addDonation(donation);
         if (userRepository.save(user) == null) {
             return "donation save error: " + donationWait.getUserEmail() +
-                    ", order_id = " + jsonNode.get("order_id").textValue();
+                    ", order_id = " + donation.getOrderId();
         }
         donationWaitRepository.delete(donationWait.getId());
         return "success: " + user.getEmail() + ", order_id = " + donation.getOrderId() +
+                ", payment_id = " + donation.getPaymentId() +
                 ", amount = " + donation.getAmount() + " " + donation.getCurrency();
     }
 
@@ -146,8 +151,8 @@ public class LiqPayServiceImpl implements LiqPayService {
             donation.setCommissionCredit(jsonNode.get("commission_credit").doubleValue());
             donation.setCurrencyDebit(jsonNode.get("currency_debit").textValue());
             donation.setCurrencyCredit(jsonNode.get("currency_credit").textValue());
-            donation.setCreateDate(jsonNode.get("create_date").longValue());
-            donation.setEndDate(jsonNode.get("end_date").longValue());
+            donation.setDate(System.currentTimeMillis());
+            donation.setAuthCodeDebit(jsonNode.get("authcode_debit").textValue());
             donation.setTransactionId(jsonNode.get("transaction_id").longValue());
             return donation;
         } catch (Exception ex) {

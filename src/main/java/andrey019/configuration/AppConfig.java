@@ -34,7 +34,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LiqPayApi getLiqPay() {
         return new LiqPay("i31942280773", "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw",
-                "https://social-andrey019.rhcloud.com/payment/liqpay");
+                "https://springdata-andrey019.rhcloud.com/payment/liqpay",
+                "https://springdata-andrey019.rhcloud.com/user");
     }
 
     @Bean

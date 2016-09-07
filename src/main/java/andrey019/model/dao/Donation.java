@@ -75,11 +75,11 @@ public class Donation {
     @Column(name = "currency_credit", nullable = false)
     private String currencyCredit;
 
-    @Column(name = "create_date", nullable = false)
-    private long createDate;
+    @Column(name = "date", nullable = false)
+    private long date;
 
-    @Column(name = "end_date", nullable = false)
-    private long endDate;
+    @Column(name = "authcode_debit", nullable = false)
+    private String authCodeDebit;
 
     @Column(name = "transaction_id", unique = true, nullable = false)
     private long transactionId;
@@ -260,20 +260,20 @@ public class Donation {
         this.currencyCredit = currencyCredit;
     }
 
-    public long getCreateDate() {
-        return createDate;
+    public long getDate() {
+        return date;
     }
 
-    public void setCreateDate(long createDate) {
-        this.createDate = createDate;
+    public void setDate(long date) {
+        this.date = date;
     }
 
-    public long getEndDate() {
-        return endDate;
+    public String getAuthCodeDebit() {
+        return authCodeDebit;
     }
 
-    public void setEndDate(long endDate) {
-        this.endDate = endDate;
+    public void setAuthCodeDebit(String authCodeDebit) {
+        this.authCodeDebit = authCodeDebit;
     }
 
     public long getTransactionId() {

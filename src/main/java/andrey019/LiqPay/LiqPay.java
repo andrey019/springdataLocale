@@ -14,14 +14,16 @@ public class LiqPay implements LiqPayApi {
     private final String publicKey;
     private final String privateKey;
     private final String callbackUrl;
-    private boolean cnbSandbox = true;
+    private final String resultUrl;
+    private boolean cnbSandbox;
     private boolean renderPayButton;
 
 
-    public LiqPay(String publicKey, String privateKey, String callbackUrl) {
+    public LiqPay(String publicKey, String privateKey, String callbackUrl, String resultUrl) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.callbackUrl = callbackUrl;
+        this.resultUrl = resultUrl;
         checkRequired();
     }
 
@@ -132,6 +134,7 @@ public class LiqPay implements LiqPayApi {
         params.put("description", "donation");
         params.put("order_id", orderId);
         params.put("server_url", callbackUrl);
+        params.put("result_url", resultUrl);
         return cnb_form(params);
     }
 
