@@ -110,7 +110,7 @@
         <p style="font-size: 130%; text-align: center">Registration form</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="regEmailInput" onblur="emailCheck()" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+            <input id="regEmailInput" onblur="emailCheck()" onkeyup="onRegistrationEnter(event)" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="regEmailError" class="alert alert-danger" role="alert">
             <p id="regEmailErrorText"></p>
@@ -118,7 +118,7 @@
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
-            <input id="regFNameInput" onblur="fNameCheck()" type="text" class="form-control" placeholder="First name" aria-describedby="basic-addon1 required">
+            <input id="regFNameInput" onblur="fNameCheck()" onkeyup="onRegistrationEnter(event)" type="text" class="form-control" placeholder="First name" aria-describedby="basic-addon1 required">
         </div>
         <div hidden id="regFNameError" class="alert alert-danger" role="alert">
             <p>You must enter your first name!</p>
@@ -126,7 +126,7 @@
         <br>
         <div class="input-group" style="border-color: red">
             <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
-            <input id="regLNameInput" onblur="lNameCheck()" type="text" class="form-control" placeholder="Last name" aria-describedby="basic-addon1 required">
+            <input id="regLNameInput" onblur="lNameCheck()" onkeyup="onRegistrationEnter(event)" type="text" class="form-control" placeholder="Last name" aria-describedby="basic-addon1 required">
         </div>
         <div hidden id="regLNameError" class="alert alert-danger" role="alert">
             <p>You must enter your last name!</p>
@@ -134,7 +134,7 @@
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-            <input id="regPassInput" onblur="passCheck()" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1 required">
+            <input id="regPassInput" onblur="passCheck()" onkeyup="onRegistrationEnter(event)" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1 required">
         </div>
         <div hidden id="regPassError" class="alert alert-danger" role="alert">
             <p>Your password must be 6-20 characters!</p>
@@ -142,7 +142,7 @@
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-            <input id="regRepeatPassInput" onblur="repeatPassCheck()" type="password" class="form-control" placeholder="Repeat password" aria-describedby="basic-addon1" required>
+            <input id="regRepeatPassInput" onblur="repeatPassCheck()" onkeyup="onRegistrationEnter(event)" type="password" class="form-control" placeholder="Repeat password" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="regRepeatPassError" class="alert alert-danger" role="alert">
             <p>Your passwords doesn't match!</p>
@@ -170,7 +170,7 @@
         <p style="font-size: 130%; text-align: center">Password recovery</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="recEmailInput" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+            <input id="recEmailInput" type="email" onkeyup="onRecoveryEnter(event)" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <br><br>
         <button id="recButton" type="button" onclick="passwordRecovery()" class="btn btn-primary" style="width: 100%">Recover</button>

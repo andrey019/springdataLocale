@@ -150,7 +150,23 @@ function repeatPassCheck() {
     }
 }
 
+function onRegistrationEnter(event) {
+    if (event.keyCode == 13) {
+        registration();
+    }
+}
+
+function onRecoveryEnter(event) {
+    if (event.keyCode == 13) {
+        passwordRecovery();
+    }
+}
+
 function registration() {
+    fNameCheck();
+    lNameCheck();
+    passCheck();
+    repeatPassCheck();
     if ($("#regEmailError").is(':visible') || $("#regFNameError").is(':visible') ||
         $("#regLNameError").is(':visible') || $("#regPassError").is(':visible') ||
         $("#regRepeatPassError").is(':visible') ||

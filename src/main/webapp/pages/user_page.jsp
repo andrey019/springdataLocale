@@ -122,17 +122,17 @@
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
-            <input id="proFNameInput" type="text" class="form-control" aria-describedby="basic-addon1 required">
+            <input id="proFNameInput" type="text" onkeyup="onProfileEnter(event)" class="form-control" aria-describedby="basic-addon1 required">
         </div>
         <br>
         <div class="input-group" style="border-color: red">
             <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
-            <input id="proLNameInput" type="text" name="lName" class="form-control" aria-describedby="basic-addon1 required">
+            <input id="proLNameInput" type="text" onkeyup="onProfileEnter(event)" name="lName" class="form-control" aria-describedby="basic-addon1 required">
         </div>
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-            <input id="proPassInput" onblur="passCheck()" type="password" name="pass" class="form-control" placeholder="New password" aria-describedby="basic-addon1 required">
+            <input id="proPassInput" onblur="passCheck()" onkeyup="onProfilePassEnter(event)" type="password" name="pass" class="form-control" placeholder="New password" aria-describedby="basic-addon1 required">
         </div>
         <div hidden id="proPassError" class="alert alert-danger" role="alert">
             <p>Your password must be 6-20 characters!</p>
@@ -140,7 +140,7 @@
         <br>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-            <input id="proRepeatPassInput" onblur="repeatPassCheck()" type="password" class="form-control" placeholder="Repeat new password" aria-describedby="basic-addon1" required>
+            <input id="proRepeatPassInput" onblur="repeatPassCheck()" onkeyup="onProfilePassEnter(event)" type="password" class="form-control" placeholder="Repeat new password" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="proRepeatPassError" class="alert alert-danger" role="alert">
             <p>Your passwords doesn't match!</p>

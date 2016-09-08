@@ -134,37 +134,46 @@ function onDonateClose() {
 }
 
 function addTodoInputEnter(event) {
-    event.preventDefault();
     if (event.keyCode == 13) {
         addTodo();
     }
 }
 
 function addTodoListInputEnter(event) {
-    event.preventDefault();
     if (event.keyCode == 13) {
         addTodoList();
     }
 }
 
 function findTodoEnter(event) {
-    event.preventDefault();
     if (event.keyCode == 13) {
         findTodo();
     }
 }
 
 function shareUserEnter(event) {
-    event.preventDefault();
     if (event.keyCode == 13) {
         shareUser();
     }
 }
 
 function donateInputEnter(event) {
-    event.preventDefault();
     if (event.keyCode == 13) {
         donate();
+    }
+}
+
+function onProfileEnter(event) {
+    if (event.keyCode == 13) {
+        updateProfile();
+    }
+}
+
+function onProfilePassEnter(event) {
+    passCheck();
+    repeatPassCheck();
+    if (event.keyCode == 13) {
+        updateProfile();
     }
 }
 
