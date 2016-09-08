@@ -22,7 +22,6 @@ public class TodoServiceImpl implements TodoService {
 
     private final static String ERROR = "error";
     private final static String OK = "ok";
-    private final static String NOT_OWNER = "This list was not created by you. You can not delete it!";
     private final static String USER_NOT_FOUND = "There is no such user!";
     private final static String EMAIL_NOT_VALID = "Email is not valid!";
     private final static String ALREADY_HAVE = "You already have this list!";
@@ -53,7 +52,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public String addTodoList(String email, String todoListName) {
         TodoList todoList = new TodoList();
-        todoList.setName(todoListName);
+        todoList.setName(escapeHtml(todoListName));
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
@@ -83,13 +82,17 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = new Todo();
         todo.setCreatedByEmail(user.getEmail());
         todo.setCreatedByName(user.getFullName());
-        todo.setTodoText(todoText);
+        todo.setTodoText(escapeHtml(todoText));
         todo.setCreated(new Date());
         todoList.addTodo(todo);
         if (todoListRepository.save(todoList) == null) {
             return ERROR;
         }
         return OK;
+    }
+
+    private String escapeHtml(String text) {
+        return text.replace("<", "&lt;").replace(">", "&gt;");
     }
 
     @Transactional

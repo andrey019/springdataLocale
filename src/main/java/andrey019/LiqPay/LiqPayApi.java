@@ -4,6 +4,7 @@ package andrey019.LiqPay;
 import java.util.Map;
 
 public interface LiqPayApi {
+
     String API_VERSION = "3";
     String LIQPAY_API_CHECKOUT_URL = "https://www.liqpay.com/api/3/checkout";
     String DEFAULT_LANG = "en";

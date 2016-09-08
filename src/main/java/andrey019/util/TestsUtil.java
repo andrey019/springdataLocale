@@ -2,7 +2,6 @@ package andrey019.util;
 
 
 import andrey019.LiqPay.LiqPay;
-import andrey019.LiqPay.LiqPayUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -95,7 +94,7 @@ public class TestsUtil {
         String signature2 = "POi8qxgSHGLVfckypD0a3e8T0AQ=";
 
         System.out.println(data.length());
-        System.out.println(new String(LiqPayUtil.base64_decode(signature2)));
+        System.out.println(new String(liqpay.base64_decode(signature2)));
 
 
         System.out.println(liqpay.checkValidity(data, signature));
@@ -104,9 +103,9 @@ public class TestsUtil {
 
         //JsonFactory factory = new JsonFactory();
         try {
-            JsonNode jsonNode = objectMapper.readTree(LiqPayUtil.base64_decode(data));
+            JsonNode jsonNode = objectMapper.readTree(liqpay.base64_decode(data));
             System.out.println(jsonNode.get("status").textValue());
-            //JsonParser jsonParser = factory.createParser(LiqPayUtil.base64_decode(data));
+            //JsonParser jsonParser = factory.createParser(liqpay.base64_decode(data));
             //System.out.println(jsonParser.getValueAsString("status"));
             //System.out.println(jsonParser.getValue("status"));
         } catch (IOException e) {
@@ -118,6 +117,11 @@ public class TestsUtil {
         numb = ((double) Math.round(numb * 100)) / 100;
         System.out.println(numb);
 
+        String replace = "<afas>sdfsdf</asdfasf>";
+        System.out.println(replace);
+        replace = replace.replace("<", "&lt;").replace(">", "&gt;");
+        System.out.println(replace);
+
 //        String signature = "1p9KrdIxZ1bsL3IrSk8InTm3Uoo=";
 //        LiqPay liqPay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY);
 //        String sign = liqPay.str_to_sign(
@@ -127,7 +131,7 @@ public class TestsUtil {
 //        );
 //        System.out.println(sign);
 //
-//        System.out.println(LiqPayUtil.base64_decode(data));
+//        System.out.println(liqpay.base64_decode(data));
 
     }
 }
