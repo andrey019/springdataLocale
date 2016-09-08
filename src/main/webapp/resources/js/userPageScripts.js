@@ -2,6 +2,9 @@
 $(document).ready(function () {
 
     document.getElementById("profileButton").onclick = function() {
+        onDeleteClose();
+        onShareClose();
+        onDonateClose();
         $("#addTodoDiv").hide();
         document.getElementById("profileModal").style.display = "block";
         getProfile();
@@ -15,6 +18,9 @@ $(document).ready(function () {
         if (typeof window.currentList === 'undefined' || window.currentList == null) {
             return;
         }
+        onProfileClose();
+        onShareClose();
+        onDonateClose();
         $("#addTodoDiv").hide();
         document.getElementById("deleteModal").style.display = "block";
         getDeleteInfo();
@@ -28,6 +34,9 @@ $(document).ready(function () {
         if (typeof window.currentList === 'undefined' || window.currentList == null) {
             return;
         }
+        onProfileClose();
+        onDeleteClose();
+        onDonateClose();
         $("#addTodoDiv").hide();
         document.getElementById("shareModal").style.display = "block";
         getShareInfo();
@@ -38,6 +47,9 @@ $(document).ready(function () {
     };
 
     document.getElementById("donateModalButton").onclick = function() {
+        onProfileClose();
+        onDeleteClose();
+        onShareClose();
         $("#addTodoDiv").hide();
         document.getElementById("donateModal").style.display = "block";
         donationInfo();
@@ -146,6 +158,13 @@ function shareUserEnter(event) {
     event.preventDefault();
     if (event.keyCode == 13) {
         shareUser();
+    }
+}
+
+function donateInputEnter(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        donate();
     }
 }
 
@@ -814,7 +833,7 @@ function donationInfo() {
             if (data != "error") {
                 document.getElementById("donateHeader").innerHTML = "Already donated " + data + " UAH";
             } else {
-                document.getElementById("donateHeader").innerHTML = "";
+                document.getElementById("donateHeader").innerHTML = "Already donated   UAH";
             }
         },
         error: function (jqXHR, exception) {

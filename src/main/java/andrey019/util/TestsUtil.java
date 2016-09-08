@@ -92,9 +92,10 @@ public class TestsUtil {
                 "GF0ZSI6MTQ3MzEwMjc5NDA2OCwiZW5kX2RhdGUiOjE0NzMxMDI3OTQwNjgsInRyYW5zYWN0aW9uX2lkI" +
                 "joyMzg2MzA4MzB9";
         String signature = "WlAKg0wvY2JGRlTPnJccNNfzI3w=";
+        String signature2 = "POi8qxgSHGLVfckypD0a3e8T0AQ=";
 
-
-        System.out.println(new String(LiqPayUtil.base64_decode(data)));
+        System.out.println(data.length());
+        System.out.println(new String(LiqPayUtil.base64_decode(signature2)));
 
 
         System.out.println(liqpay.checkValidity(data, signature));

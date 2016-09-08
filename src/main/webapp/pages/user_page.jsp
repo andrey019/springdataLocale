@@ -225,11 +225,11 @@
 <div id="donateModal" class="modal">
     <div class="modal-content">
         <span id="donateCloseSpan" class="close">×</span><br>
-        <p id="donateHeader" style="font-size: 130%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center">Already donated 999 UAH</p>
-        <p>You can donate money with your credit card</p>
+        <p id="donateHeader" style="font-size: 130%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center">Already donated   UAH</p>
+        <p>You can donate some money if you'd like (via LiqPay)</p>
         <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-            <input id="donateInput" type="number" class="form-control" placeholder="1 UAH minimum" aria-describedby="basic-addon1" required>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span></span>
+            <input id="donateInput" type="number" onkeyup="donateInputEnter(event)" class="form-control" placeholder="1 UAH minimum" aria-describedby="basic-addon1" required>
         </div>
         <div hidden id="donateInputError" class="alert alert-danger" role="alert">
             <p id="donateInputErrorText">Wrong value!</p>

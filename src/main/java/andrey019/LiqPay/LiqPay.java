@@ -15,7 +15,7 @@ public class LiqPay implements LiqPayApi {
     private final String privateKey;
     private final String callbackUrl;
     private final String resultUrl;
-    private boolean cnbSandbox;
+    private boolean cnbSandbox = true;
     private boolean renderPayButton;
 
 

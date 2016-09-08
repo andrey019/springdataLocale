@@ -213,7 +213,9 @@ public class TodoServiceImpl implements TodoService {
             return ERROR;
         }
         if (!todoList.getOwner().equals(user)) {
-            return NOT_OWNER;
+            user.removeSharedTodoList(todoList);
+            userRepository.save(user);
+            return OK;
         }
         todoList.getUsers().size();
         for (User innerUser : todoList.getUsers()) {

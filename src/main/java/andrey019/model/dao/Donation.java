@@ -40,49 +40,23 @@ public class Donation {
     private String liqpayOrderId;
 
     @Column(nullable = false)
-    private String ip;
-
-    @Column(nullable = false)
     private double amount;
 
     @Column(nullable = false)
     private String currency;
 
-    @Column(name = "sender_commission", nullable = false)
-    private double senderCommission;
-
-    @Column(name = "receiver_commission", nullable = false)
-    private double receiverCommission;
-
-    @Column(name = "agent_commission", nullable = false)
-    private double agentCommission;
-
-    @Column(name = "amount_debit", nullable = false)
-    private double amountDebit;
-
-    @Column(name = "amount_credit", nullable = false)
-    private double amountCredit;
-
-    @Column(name = "commission_debit", nullable = false)
-    private double commissionDebit;
-
-    @Column(name = "commission_credit", nullable = false)
-    private double commissionCredit;
-
-    @Column(name = "currency_debit", nullable = false)
-    private String currencyDebit;
-
-    @Column(name = "currency_credit", nullable = false)
-    private String currencyCredit;
-
     @Column(name = "date", nullable = false)
     private long date;
 
-    @Column(name = "authcode_debit", nullable = false)
-    private String authCodeDebit;
-
     @Column(name = "transaction_id", unique = true, nullable = false)
     private long transactionId;
+
+    @Lob
+    @Column(nullable = false)
+    private String data;
+
+    @Column(nullable = false)
+    private String signature;
 
     public long getId() {
         return id;
@@ -164,14 +138,6 @@ public class Donation {
         this.liqpayOrderId = liqpayOrderId;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public double getAmount() {
         return amount;
     }
@@ -188,78 +154,6 @@ public class Donation {
         this.currency = currency;
     }
 
-    public double getSenderCommission() {
-        return senderCommission;
-    }
-
-    public void setSenderCommission(double senderCommission) {
-        this.senderCommission = senderCommission;
-    }
-
-    public double getReceiverCommission() {
-        return receiverCommission;
-    }
-
-    public void setReceiverCommission(double receiverCommission) {
-        this.receiverCommission = receiverCommission;
-    }
-
-    public double getAgentCommission() {
-        return agentCommission;
-    }
-
-    public void setAgentCommission(double agentCommission) {
-        this.agentCommission = agentCommission;
-    }
-
-    public double getAmountDebit() {
-        return amountDebit;
-    }
-
-    public void setAmountDebit(double amountDebit) {
-        this.amountDebit = amountDebit;
-    }
-
-    public double getAmountCredit() {
-        return amountCredit;
-    }
-
-    public void setAmountCredit(double amountCredit) {
-        this.amountCredit = amountCredit;
-    }
-
-    public double getCommissionDebit() {
-        return commissionDebit;
-    }
-
-    public void setCommissionDebit(double commissionDebit) {
-        this.commissionDebit = commissionDebit;
-    }
-
-    public double getCommissionCredit() {
-        return commissionCredit;
-    }
-
-    public void setCommissionCredit(double commissionCredit) {
-        this.commissionCredit = commissionCredit;
-    }
-
-    public String getCurrencyDebit() {
-        return currencyDebit;
-    }
-
-    public void setCurrencyDebit(String currencyDebit) {
-        this.currencyDebit = currencyDebit;
-    }
-
-    public String getCurrencyCredit() {
-        return currencyCredit;
-    }
-
-    public void setCurrencyCredit(String currencyCredit) {
-        this.currencyCredit = currencyCredit;
-    }
-
     public long getDate() {
         return date;
     }
@@ -268,19 +162,27 @@ public class Donation {
         this.date = date;
     }
 
-    public String getAuthCodeDebit() {
-        return authCodeDebit;
-    }
-
-    public void setAuthCodeDebit(String authCodeDebit) {
-        this.authCodeDebit = authCodeDebit;
-    }
-
     public long getTransactionId() {
         return transactionId;
     }
 
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }

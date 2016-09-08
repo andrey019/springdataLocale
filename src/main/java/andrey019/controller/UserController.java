@@ -38,7 +38,7 @@ public class UserController {
 
     @RequestMapping(value = {"/", ""}, method = RequestMethod.GET)
     public String userPage(HttpServletRequest request) {
-        logService.accessToPage("user (user_page) " + getUserEmail() + ", ip = " + request.getRemoteAddr());
+        logService.accessToPage("user " + getUserEmail() + ", ip = " + request.getRemoteAddr());
         return "user_page";
     }
 

@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/")
 public class MainController {
@@ -16,8 +18,8 @@ public class MainController {
 
 
 	@RequestMapping("/")
-	public String listAdvs() {
-		logService.accessToPage("main");
+	public String listAdvs(HttpServletRequest request) {
+		logService.accessToPage("main, ip = " + request.getRemoteAddr());
         if (checkAuthentication() != null) {
             return "redirect:/user";
         }

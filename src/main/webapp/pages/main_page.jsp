@@ -31,7 +31,8 @@
 
         <p id="navbarText" class="navbar-text" style="font-size: 115%; padding-left: 145px; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></p>
         <form class="navbar-form navbar-right" style="padding-right: 30px">
-            <button id="registrationButton" type="submit" class="btn btn-success">Create free account</button>
+            <button id="registrationButton" type="button" class="btn btn-success">Create free account</button>
+            <button id="contactsButton" type="button" class="btn btn-info">Contacts</button>
         </form>
     </div>
     </div>
@@ -182,6 +183,18 @@
         <div hidden id="recError" class="alert alert-danger" role="alert">
             <p id="recErrorText"></p>
         </div>
+    </div>
+</div>
+
+
+
+<div id="contactsModal" class="modal">
+    <div class="modal-content">
+        <span id="contactsCloseSpan" class="close">×</span><br>
+        <p style="font-size: 130%; text-align: center">Contacts</p>
+        <p>You can contact us using information below:<br>
+            Email: andrey019@gmail.com<br>
+            Phone: +380633750943</p>
     </div>
 </div>
 

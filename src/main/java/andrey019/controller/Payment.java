@@ -1,7 +1,6 @@
 package andrey019.controller;
 
 
-import andrey019.LiqPay.LiqPay;
 import andrey019.model.json.JsonDonation;
 import andrey019.service.maintenance.LogService;
 import andrey019.service.payment.LiqPayService;
@@ -23,14 +22,10 @@ public class Payment {
     @Autowired
     private LogService logService;
 
-    @Autowired
-    private LiqPay liqPay;
-
 
     @RequestMapping(value = "/liqpay", method = RequestMethod.POST)
     public void liqpay(@RequestParam("data") String data, @RequestParam("signature") String signature,
                        HttpServletResponse response) {
-        System.out.println(new String(liqPay.base64_decode(data)));
         logService.donation(liqPayService.donationConfirm(data, signature));
         response.setStatus(HttpServletResponse.SC_OK);
     }

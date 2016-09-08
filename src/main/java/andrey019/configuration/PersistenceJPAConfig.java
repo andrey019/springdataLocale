@@ -40,6 +40,12 @@ public class PersistenceJPAConfig{
             dataSource.setJdbcUrl("jdbc:mysql://127.9.151.2:3306/springdata?useUnicode=true&characterEncoding=UTF-8");
             dataSource.setUser("adminQ9DEsXw");
             dataSource.setPassword("4GPIWUAUCiJ3");
+//            dataSource.setJdbcUrl("jdbc:mysql://127.10.28.2:3306/social?useUnicode=true&characterEncoding=UTF-8");
+//            dataSource.setUser("admin4RfrnCZ");
+//            dataSource.setPassword("wUUfcSgEkCsm");
+//            dataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/social?useUnicode=true&characterEncoding=UTF-8");
+//            dataSource.setUser("root");
+//            dataSource.setPassword("password");
             dataSource.setMinPoolSize(3);
             dataSource.setMaxPoolSize(20);
             dataSource.setAcquireIncrement(3);

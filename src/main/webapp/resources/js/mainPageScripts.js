@@ -2,8 +2,9 @@
 $(document).ready(function () {
     window.emailValidity = "no";
 
-    document.getElementById("registrationButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("registrationButton").onclick = function() {
+        onRecoveryClose();
+        onContactsClose();
         document.getElementById("registrationModal").style.display = "block";
         $("#signInDiv").hide();
     };
@@ -12,8 +13,9 @@ $(document).ready(function () {
         onRegFormClose();
     };
 
-    document.getElementById("recoveryButton").onclick = function(event) {
-        event.preventDefault();
+    document.getElementById("recoveryButton").onclick = function() {
+        onRegFormClose();
+        onContactsClose();
         document.getElementById("recoveryModal").style.display = "block";
         $("#signInDiv").hide();
     };
@@ -22,12 +24,26 @@ $(document).ready(function () {
         onRecoveryClose();
     };
 
+    document.getElementById("contactsButton").onclick = function() {
+        onRecoveryClose();
+        onRegFormClose();
+        document.getElementById("contactsModal").style.display = "block";
+        $("#signInDiv").hide();
+    };
+
+    document.getElementById("contactsCloseSpan").onclick = function() {
+        onContactsClose();
+    };
+
     window.onclick = function(event) {
         if (event.target == document.getElementById("recoveryModal")) {
             onRecoveryClose();
         }
         if (event.target == document.getElementById("registrationModal")) {
             onRegFormClose();
+        }
+        if (event.target == document.getElementById("contactsModal")) {
+            onContactsClose();
         }
     };
 });
@@ -57,6 +73,11 @@ function onRecoveryClose() {
     document.getElementById("recEmailInput").value = "";
     $("#recSuccess").hide();
     $("#recError").hide();
+}
+
+function onContactsClose() {
+    document.getElementById("contactsModal").style.display = "none";
+    $("#signInDiv").show();
 }
 
 function emailCheck() {
