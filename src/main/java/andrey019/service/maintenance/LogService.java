@@ -14,4 +14,6 @@ public interface LogService {
     void newUser(String message);
 
     void donation(String message);
+
+    void exception(String message);
 }

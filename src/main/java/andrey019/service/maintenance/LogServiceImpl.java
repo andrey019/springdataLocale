@@ -75,4 +75,14 @@ public class LogServiceImpl implements LogService {
         stringBuilder.append(message);
         System.out.println(stringBuilder.toString());
     }
+
+    @Override
+    public void exception(String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        stringBuilder.append(DATE_FORMAT.format(System.currentTimeMillis()));
+        stringBuilder.append("] [Exception] ");
+        stringBuilder.append(message);
+        System.out.println(stringBuilder.toString());
+    }
 }
