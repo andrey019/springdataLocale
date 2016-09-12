@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/resources/images/favicon.ico" type="image\x-icon" />
     <link rel="icon" href="/resources/images/favicon.ico" type="image\x-icon" />
     <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/modal.css" rel="stylesheet">
+    <link href="/resources/css/styles.css" rel="stylesheet">
     <link href="/resources/css/social-buttons-3.css" rel="stylesheet">
     <script type="text/javascript" src="/resources/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="/resources/bootstrap/js/bootstrap.min.js"></script>
@@ -20,17 +20,17 @@
 </head>
 <body style="background-image: url('/resources/images/background2.jpg'); background-attachment: fixed">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" style="color: #3e8f3e">
+<nav id="navbarColor" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 
             </button>
-            <a class="navbar-brand" href="#" style="font-size: 160%; padding-left: 30px">WunderWaffel</a>
+            <a id="navbarBrand" class="navbar-brand" href="#">WunderWaffel</a>
         </div>
 
-        <p id="navbarText" class="navbar-text" style="font-size: 115%; padding-left: 145px; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></p>
-        <form class="navbar-form navbar-right" style="padding-right: 30px">
+        <p id="navbarText" class="navbar-text"></p>
+        <form id="navbarRight" class="navbar-form navbar-right">
             <button id="registrationButton" type="button" class="btn btn-success">Create free account</button>
             <button id="contactsButton" type="button" class="btn btn-info">Contacts</button>
         </form>
@@ -39,7 +39,7 @@
 </nav>
 
 
-<div id="signInDiv" style="width: 400px; height: 300px; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto;">
+<div id="signInDiv">
     <c:if test="${param.error != null}">
         <div class="alert alert-danger" role="alert">
             Email or password is incorrect!
@@ -80,7 +80,7 @@
         <div class="form-actions">
             <input type="submit" class="btn btn-block btn-primary" value="Sign in">
         </div><br>
-        <button id="recoveryButton" type="button" class="btn btn-danger" style="width: 100%">
+        <button id="recoveryButton" type="button" class="btn btn-danger width100">
             Can't remember my password...
         </button><br><br>
         <div>
@@ -107,7 +107,7 @@
 <div id="registrationModal" class="modal">
     <div class="modal-content">
         <span id="closeSpan" class="close">×</span><br>
-        <p style="font-size: 130%; text-align: center">Registration form</p>
+        <p class="modal-header modalHeader">Registration form</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
             <input id="regEmailInput" onblur="emailCheck()" onkeyup="onRegistrationEnter(event)" type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
@@ -149,7 +149,7 @@
         </div>
         <br>
         <br><br>
-        <button id="regButton" type="button" onclick="registration()" class="btn btn-primary" style="width: 100%">Sign up!</button>
+        <button id="regButton" type="button" onclick="registration()" class="btn btn-primary width100">Sign up!</button>
         <br><br>
         <div hidden id="regSuccess" class="alert alert-success" role="alert">
             <p>Your form is accepted!<br>
@@ -167,13 +167,13 @@
 <div id="recoveryModal" class="modal">
     <div class="modal-content">
         <span id="recCloseSpan" class="close">×</span><br>
-        <p style="font-size: 130%; text-align: center">Password recovery</p>
+        <p class="modal-header modalHeader">Password recovery</p>
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
             <input id="recEmailInput" type="email" onkeyup="onRecoveryEnter(event)" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
         </div>
         <br><br>
-        <button id="recButton" type="button" onclick="passwordRecovery()" class="btn btn-primary" style="width: 100%">Recover</button>
+        <button id="recButton" type="button" onclick="passwordRecovery()" class="btn btn-primary width100">Recover</button>
         <br><br>
         <div hidden id="recSuccess" class="alert alert-success" role="alert">
             <p>Recovery successful!<br>
@@ -191,7 +191,7 @@
 <div id="contactsModal" class="modal">
     <div class="modal-content">
         <span id="contactsCloseSpan" class="close">×</span><br>
-        <p style="font-size: 130%; text-align: center">Contacts</p>
+        <p class="modal-header modalHeader">Contacts</p>
         <p>You can contact us using information below:<br>
             Email: andrey019@gmail.com<br>
             Phone: +380633750943</p>

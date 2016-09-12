@@ -1,0 +1,133 @@
+
+#navbarBrand {
+    font-size: 160%;
+    padding-left: 30px;
+}
+
+#navbarColor {
+    color: #3e8f3e;
+}
+
+#navbarText {
+    font-size: 115%;
+    padding-left: 145px;
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#navbarRight {
+    padding-right: 30px;
+}
+
+#signInDiv {
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.modalHeader {
+    font-size: 130%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#mainDiv {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 70px;
+}
+
+#leftMenuTop {
+    width: 337px;
+    float: left;
+    position: fixed;
+    bottom: 150px;
+    height: auto;
+    top: 70px;
+    overflow-y: auto;
+}
+
+#leftTopChild {
+    width: 290px;
+    float: left;
+    margin-left: 15px;
+}
+
+#leftTopRow {
+    width: 320px;
+}
+
+#rightMenuBottom {
+    margin-left: 340px;
+    width: auto;
+}
+
+#bottomMenu {
+    position: fixed;
+    bottom: 20px;
+    width: 320px;
+    margin-left: 15px;
+}
+
+.width100 {
+    width: 100%;
+}
+
+.btnGlyph {
+    font-size: 20px;
+}
+
+#searchResult {
+    width: 100%;
+    padding-right: 30px;
+}
+
+#todoResult, #doneTodoResult, #bottomButtons {
+    padding-right: 30px;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 150px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    padding-top: 5px;
+    border: 1px solid #888;
+    width: 400px;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
