@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,10 +118,12 @@ public class TestsUtil {
         numb = ((double) Math.round(numb * 100)) / 100;
         System.out.println(numb);
 
-        String replace = "<afas>sdfsdf</asdfasf>";
+        String replace = "<олоs>sd'fs'df</asdfasf>";
         System.out.println(replace);
-        replace = replace.replace("<", "&lt;").replace(">", "&gt;");
-        System.out.println(replace);
+        //replace = replace.replace("<", "&lt;").replace(">", "&gt;");
+        //replace = StringEscapeUtils.escapeHtml4(replace);
+        //StringEscapeUtils.escapeEcmaScript(replace);
+        System.out.println(StringEscapeUtils.escapeEcmaScript(replace));
 
 //        String signature = "1p9KrdIxZ1bsL3IrSk8InTm3Uoo=";
 //        LiqPay liqPay = new LiqPay(LIQPAY_PUBLIC_KEY, LIQPAY_PRIVATE_KEY);

@@ -7,6 +7,7 @@ import andrey019.repository.TodoListRepository;
 import andrey019.repository.TodoRepository;
 import andrey019.repository.UserRepository;
 import andrey019.service.HtmlGenerator;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,7 +93,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private String escapeHtml(String text) {
-        return text.replace("<", "&lt;").replace(">", "&gt;");
+        return StringEscapeUtils.escapeHtml4(text).replace("\"", "&quot;");
     }
 
     @Transactional
