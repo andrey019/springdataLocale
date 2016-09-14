@@ -96,7 +96,7 @@ function listAutoSelect() {
         if (lists.length > 0) {
             lists[0].click();
         }
-    }, 100);
+    }, 500);
 }
 
 function onProfileClose() {
