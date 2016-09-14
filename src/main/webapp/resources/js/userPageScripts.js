@@ -76,6 +76,7 @@ $(document).ready(function () {
 
     setTimeZone();
     loadLists();
+    listAutoSelect();
 });
 
 function setTimeZone() {
@@ -87,6 +88,15 @@ function setTimeZone() {
     } else {
         window.timeZone = "GMT";
     }
+}
+
+function listAutoSelect() {
+    setTimeout(function() {
+        var lists = document.getElementById("listResult").getElementsByTagName("button");
+        if (lists.length > 0) {
+            lists[0].click();
+        }
+    }, 100);
 }
 
 function onProfileClose() {
