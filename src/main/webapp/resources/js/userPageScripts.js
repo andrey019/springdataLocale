@@ -92,11 +92,15 @@ function setTimeZone() {
 
 function listAutoSelect() {
     setTimeout(function() {
-        var lists = document.getElementById("listResult").getElementsByTagName("button");
-        if (lists.length > 0) {
-            lists[0].click();
+        if (document.getElementById("listResult").innerHTML == "") {
+            listAutoSelect();
+        } else {
+            var lists = document.getElementById("listResult").getElementsByTagName("button");
+            if (lists.length > 0) {
+                lists[0].click();
+            }
         }
-    }, 500);
+    }, 200);
 }
 
 function onProfileClose() {
@@ -136,6 +140,7 @@ function onShareClose() {
 
 function onDonateClose() {
     document.getElementById("donateModal").style.display = "none";
+    document.getElementById("donateButton").disabled = false;
     $("#addTodoDiv").show();
     document.getElementById("donateHeader").innerHTML = "";
     document.getElementById("donateInput").value = "";
@@ -829,6 +834,7 @@ function donate() {
         headers: getCSRFHeader(),
         success: function (data) {
             if (data != "error") {
+                document.getElementById("donateButton").disabled = true;
                 document.getElementById("donateFormContainer").innerHTML = data;
                 document.getElementById("donateForm").submit();
             } else {

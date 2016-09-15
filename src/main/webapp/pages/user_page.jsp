@@ -52,9 +52,7 @@
                 </div>
             </div>
             <br>
-            <div id="listResult" class="list-group">
-
-            </div>
+            <div id="listResult" class="list-group"></div>
         </div>
     </div>
 
