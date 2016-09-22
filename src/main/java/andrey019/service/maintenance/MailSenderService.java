@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MailSenderService extends Thread {
@@ -22,6 +23,8 @@ public class MailSenderService extends Thread {
 
     private final static MailSenderService MAIL_SENDER_SERVICE = new MailSenderService();
     private final static ConcurrentLinkedQueue<CustomMessage> QUEUE = new ConcurrentLinkedQueue<>();
+    private final static ConcurrentHashMap<CustomMessage, Integer> REPEATED_QUEUE = new ConcurrentHashMap<>();
+    private final static int MAX_REPEATES = 5;
     private final static long INITIAL_DELAY_MILLISECONDS = 10 * 1000;
     private final static long SEND_INTERVAL_MILLISECONDS = 70 * 1000;
     private final static String CONTENT_TYPE = "text/html;charset=UTF-8";
@@ -46,12 +49,31 @@ public class MailSenderService extends Thread {
                 MimeMessagePreparator preparator = getMessagePreparator(message);
                 try {
                     mailSender.send(preparator);
-                    QUEUE.poll();
+                    REPEATED_QUEUE.remove(QUEUE.poll());
                     logService.mailSent(message.getTo(), QUEUE.size());
                 } catch (MailException ex) {
-                    System.out.println(ex.getMessage());
+                    logService.exception(ex.getMessage());
+                    ex.printStackTrace();
+                    errorHandling();
                 }
             }
+        }
+    }
+
+    private void errorHandling() {
+        if (REPEATED_QUEUE.containsKey(QUEUE.peek())) {
+            int repeates;
+            if ( (repeates = REPEATED_QUEUE.get(QUEUE.peek())) < MAX_REPEATES) {
+                REPEATED_QUEUE.put(QUEUE.peek(), repeates + 1);
+                QUEUE.add(QUEUE.poll());
+            } else {
+                logService.exception("mail message deleted after " + MAX_REPEATES + " attempts to deliver it, " +
+                        "addressed to " + QUEUE.peek().getTo());
+                REPEATED_QUEUE.remove(QUEUE.poll());
+            }
+        } else {
+            REPEATED_QUEUE.put(QUEUE.peek(), 1);
+            QUEUE.add(QUEUE.poll());
         }
     }
 
