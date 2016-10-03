@@ -1,5 +1,8 @@
 package andrey019.controller;
 
+import andrey019.model.api.JsonList;
+import andrey019.model.dao.Todo;
+import andrey019.model.dao.TodoList;
 import andrey019.model.json.JsonFindTodo;
 import andrey019.model.json.JsonMessage;
 import andrey019.model.json.JsonProfile;
@@ -9,12 +12,15 @@ import andrey019.service.auth.ProfileService;
 import andrey019.service.dao.TodoService;
 import andrey019.service.maintenance.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -42,19 +48,26 @@ public class UserController {
         return "user_page";
     }
 
-    @RequestMapping(value = "/loadLists", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @RequestMapping(value = "/loadLists", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String loadLists() {
+    public Set<TodoList> loadLists() {
         logService.ajaxJson("loadLists " + getUserEmail());
         return todoService.getAllTodoLists(getUserEmail());
     }
 
-    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
+//    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
+//    @ResponseBody
+//    public String loadTodos(@RequestBody JsonTodoList jsonTodoList) {
+//        logService.ajaxJson("loadTodos " + getUserEmail());
+//        return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
+//                jsonTodoList.getTimeZone());
+//    }
+
+    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String loadTodos(@RequestBody JsonTodoList jsonTodoList) {
+    public Set<Todo> loadTodos(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("loadTodos " + getUserEmail());
-        return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
-                jsonTodoList.getTimeZone());
+        return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
     @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = TEXT_UTF8)

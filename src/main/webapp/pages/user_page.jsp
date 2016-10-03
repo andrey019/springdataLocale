@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/resources/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="/resources/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/resources/js/userPageScripts.js"></script>
+    <script type="text/javascript" src="/resources/js/constructor.js"></script>
     <meta http-equiv="refresh" content="${pageContext.session.maxInactiveInterval}">
     <sec:csrfMetaTags />
     <sec:authorize access="isAuthenticated()">

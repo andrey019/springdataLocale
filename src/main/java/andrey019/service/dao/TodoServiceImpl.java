@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service("todoService")
 public class TodoServiceImpl implements TodoService {
@@ -272,7 +273,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public String getTodosByListId(String email, long todoListId, String timeZone) {
+    public Set<Todo> getTodosByListId(String email, long todoListId) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
@@ -285,7 +286,8 @@ public class TodoServiceImpl implements TodoService {
             return null;
         }
         todoList.getTodos().size();
-        return htmlGenerator.generateTodosHtml(todoList.getTodos(), timeZone);
+        return todoList.getTodos();
+        //return htmlGenerator.generateTodosHtml(todoList.getTodos(), timeZone);
     }
 
     @Transactional
@@ -308,13 +310,13 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public String getAllTodoLists(String email) {
+    public Set<TodoList> getAllTodoLists(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
         }
         user.getSharedTodoLists().size();
-        return htmlGenerator.generateTodoListsHtml(user.getSharedTodoLists());
+        return user.getSharedTodoLists();
     }
 
     @Transactional

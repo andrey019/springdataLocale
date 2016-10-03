@@ -1,6 +1,8 @@
 package andrey019.model.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,10 +21,12 @@ public class TodoList {
     @Column(name = "todo_amount", nullable = false)
     private int todoAmount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "user_todo_list",
@@ -30,10 +34,12 @@ public class TodoList {
     inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
     private Set<User> users = new HashSet<>();
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Todo> todos = new HashSet<>();
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DoneTodo> doneTodos = new HashSet<>();

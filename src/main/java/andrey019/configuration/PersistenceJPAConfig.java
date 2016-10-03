@@ -42,9 +42,9 @@ public class PersistenceJPAConfig{
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
             dataSource.setDriverClass("com.mysql.jdbc.Driver");
-            dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
-            dataSource.setUser(environment.getProperty("jdbc.user"));
-            dataSource.setPassword(environment.getProperty("jdbc.pass"));
+            dataSource.setJdbcUrl(environment.getProperty("jdbc.test.url"));
+            dataSource.setUser(environment.getProperty("jdbc.test.user"));
+            dataSource.setPassword(environment.getProperty("jdbc.test.pass"));
             dataSource.setMinPoolSize(3);
             dataSource.setMaxPoolSize(20);
             dataSource.setAcquireIncrement(3);

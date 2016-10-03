@@ -1,6 +1,11 @@
 package andrey019.service.dao;
 
 
+import andrey019.model.dao.Todo;
+import andrey019.model.dao.TodoList;
+
+import java.util.Set;
+
 public interface TodoService {
 
     String addTodoList(String email, String todoListName);
@@ -21,11 +26,11 @@ public interface TodoService {
 
     String getSharedWithInfo(String email, long todoListId);
 
-    String getTodosByListId(String email, long todoListId, String timeZone);
+    Set<Todo> getTodosByListId(String email, long todoListId);
 
     String getDoneTodosByListId(String email, long todoListId, String timeZone);
 
-    String getAllTodoLists(String email);
+    Set<TodoList> getAllTodoLists(String email);
 
     String getDonationInfo(String email);
 }
