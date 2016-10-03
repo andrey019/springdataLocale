@@ -261,7 +261,7 @@ function loadLists() {
         contentType: 'application/json',
         headers: getCSRFHeader(),
         success: function (data) {
-            makeTodoLists(data);
+            constructTodoLists(data);
             if (typeof window.currentList !== 'undefined' && window.currentList != null) {
                 document.getElementById(window.currentList.id).className = "list-group-item active";
             }
@@ -281,7 +281,7 @@ function loadListsFromSearch() {
         contentType: 'application/json',
         headers: getCSRFHeader(),
         success: function (data) {
-            makeTodoLists(data);
+            constructTodoLists(data);
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);
@@ -306,8 +306,7 @@ function loadCurrentListTodos() {
         contentType: 'application/json',
         headers: getCSRFHeader(),
         success: function (data) {
-            //document.getElementById("todoResult").innerHTML = data;
-            makeTodos(data);
+            constructTodos(data);
             document.getElementById("navbarText").innerHTML = window.navbarText;
             if (typeof window.showDoneTodos !== 'undefined' && window.showDoneTodos != null) {
                 loadDoneTodos();
