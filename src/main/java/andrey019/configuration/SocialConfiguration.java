@@ -27,29 +27,24 @@ import javax.sql.DataSource;
 @EnableSocial
 public class SocialConfiguration implements SocialConfigurer {
 
-    private final static String FACEBOOK_ID = "547901995417408";
-    private final static String FACEBOOK_SECRET = "0ca404bdd6a11251f85a8253a2769267";
-    private final static String GOOGLE_ID = "950741425322-tpqdvbo1cqr10i86st1poeve2udrjo3n.apps.googleusercontent.com";
-    private final static String GOOGLE_SECRET = "72AGGEShd-DyY2WWLIIosskV";
-    private final static String LINKEDIN_ID = "78r50avtuljll0";
-    private final static String LINKEDIN_SECRET = "WlxsinHG4LnW5iBo";
-
-
     @Autowired
     private DataSource dataSource;
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer,
                                        Environment environment) {
-        FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(FACEBOOK_ID, FACEBOOK_SECRET);
+        FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
+                environment.getProperty("facebook.id"), environment.getProperty("facebook.secret"));
         facebookConnectionFactory.setScope("public_profile,email");
         connectionFactoryConfigurer.addConnectionFactory(facebookConnectionFactory);
 
-        GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_ID, GOOGLE_SECRET);
+        GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
+                environment.getProperty("google.id"), environment.getProperty("google.secret"));
         googleConnectionFactory.setScope("email");
         connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
 
-        LinkedInConnectionFactory linkedInConnectionFactory = new LinkedInConnectionFactory(LINKEDIN_ID, LINKEDIN_SECRET);
+        LinkedInConnectionFactory linkedInConnectionFactory = new LinkedInConnectionFactory(
+                environment.getProperty("linkedin.id"), environment.getProperty("linkedin.secret"));
         connectionFactoryConfigurer.addConnectionFactory(linkedInConnectionFactory);
     }
 

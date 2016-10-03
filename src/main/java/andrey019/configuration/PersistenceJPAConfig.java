@@ -1,8 +1,10 @@
 package andrey019.configuration;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,6 +23,9 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "andrey019.repository")
 public class PersistenceJPAConfig{
 
+    @Autowired
+    private Environment environment;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -37,9 +42,9 @@ public class PersistenceJPAConfig{
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
             dataSource.setDriverClass("com.mysql.jdbc.Driver");
-            dataSource.setJdbcUrl("jdbc:mysql://127.9.151.2:3306/springdata?useUnicode=true&characterEncoding=UTF-8");
-            dataSource.setUser("adminQ9DEsXw");
-            dataSource.setPassword("4GPIWUAUCiJ3");
+            dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
+            dataSource.setUser(environment.getProperty("jdbc.user"));
+            dataSource.setPassword(environment.getProperty("jdbc.pass"));
             dataSource.setMinPoolSize(3);
             dataSource.setMaxPoolSize(20);
             dataSource.setAcquireIncrement(3);

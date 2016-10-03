@@ -5,9 +5,12 @@ import andrey019.LiqPay.LiqPayApi;
 import andrey019.service.maintenance.ConfirmationCleanUpService;
 import andrey019.service.maintenance.MailSenderService;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -21,9 +24,13 @@ import java.util.Properties;
 
 
 @Configuration
+@PropertySource("classpath:/properties/app.properties")
 @ComponentScan("andrey019")
 @EnableWebMvc
 public class AppConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private Environment environment;
 
     @PostConstruct
     private void servicesInit() {
@@ -33,9 +40,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public LiqPayApi getLiqPay() {
-        return new LiqPay("i31942280773", "2a1NcYfUoz09cuUQPRZikmq5LAQgk7JdA5PDDeNw",
-                "https://springdata-andrey019.rhcloud.com/payment/liqpay",
-                "https://springdata-andrey019.rhcloud.com/user");
+        return new LiqPay(environment.getProperty("liqpay.id"), environment.getProperty("liqpay.pass"),
+                environment.getProperty("liqpay.callback.url"), environment.getProperty("liqpay.redirect.url"));
     }
 
     @Bean
@@ -56,10 +62,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.mail.ru");
-        mailSender.setPort(465);
-        mailSender.setUsername("wunderwaffelapp@mail.ru");
-        mailSender.setPassword("90gdfg70gsds897");
+        mailSender.setHost(environment.getProperty("mail.host"));
+        mailSender.setPort(Integer.valueOf(environment.getProperty("mail.port")));
+        mailSender.setUsername(environment.getProperty("mail.user"));
+        mailSender.setPassword(environment.getProperty("mail.pass"));
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
