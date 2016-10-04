@@ -1,8 +1,10 @@
 package andrey019.controller;
 
 import andrey019.model.api.JsonList;
+import andrey019.model.dao.DoneTodo;
 import andrey019.model.dao.Todo;
 import andrey019.model.dao.TodoList;
+import andrey019.model.dao.User;
 import andrey019.model.json.JsonFindTodo;
 import andrey019.model.json.JsonMessage;
 import andrey019.model.json.JsonProfile;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -70,12 +73,11 @@ public class UserController {
         return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
-    @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @RequestMapping(value = "/loadDoneTodos", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String loadDoneTodos(@RequestBody JsonTodoList jsonTodoList) {
+    public Set<DoneTodo> loadDoneTodos(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("loadDoneTodos " + getUserEmail());
-        return todoService.getDoneTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
-                jsonTodoList.getTimeZone());
+        return todoService.getDoneTodosByListId(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
     @RequestMapping(value = "/addTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
@@ -106,9 +108,9 @@ public class UserController {
         return todoService.addTodoList(getUserEmail(), jsonMessage.getListName());
     }
 
-    @RequestMapping(value = "/todoListDeleteInfo", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @RequestMapping(value = "/todoListDeleteInfo", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String getTodoListDeleteInfo(@RequestBody JsonTodoList jsonTodoList) {
+    public List<User> getTodoListDeleteInfo(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("getTodoListDeleteInfo " + getUserEmail());
         return todoService.getDeleteInfo(getUserEmail(), jsonTodoList.getTodoListId());
     }
@@ -120,9 +122,9 @@ public class UserController {
         return todoService.deleteTodoList(getUserEmail(), jsonTodoList.getTodoListId());
     }
 
-    @RequestMapping(value = "/todoListShareInfo", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @RequestMapping(value = "/todoListShareInfo", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String todoListShareInfo(@RequestBody JsonTodoList jsonTodoList) {
+    public Set<User> todoListShareInfo(@RequestBody JsonTodoList jsonTodoList) {
         logService.ajaxJson("todoListShareInfo " + getUserEmail());
         return todoService.getSharedWithInfo(getUserEmail(), jsonTodoList.getTodoListId());
     }
@@ -154,11 +156,11 @@ public class UserController {
         return profileService.updateProfile(getUserEmail(), jsonProfile);
     }
 
-    @RequestMapping(value = "/findTodo", method = RequestMethod.POST, produces = TEXT_UTF8)
+    @RequestMapping(value = "/findTodo", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public String findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
+    public HashMap<TodoList, Set<Todo>> findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
         logService.ajaxJson("findTodo " + getUserEmail() + " / " + jsonFindTodo.getRequest());
-        return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest(), jsonFindTodo.getTimeZone());
+        return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest());
     }
 
     @RequestMapping(value = "/donationInfo", method = RequestMethod.POST, produces = TEXT_UTF8)

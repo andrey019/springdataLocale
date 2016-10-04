@@ -1,6 +1,10 @@
 package andrey019.model.dao;
 
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,6 +16,7 @@ public class DoneTodo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "todo_list_id", nullable = false)
     private TodoList todoList;
@@ -23,12 +28,14 @@ public class DoneTodo {
     @Column(name = "done_by_name", nullable = false)
     private String doneByName;
 
+    @JsonIgnore
     @Column(name = "done_by_email", nullable = false)
     private String doneByEmail;
 
     @Column(name = "created_by_name", nullable = false)
     private String createdByName;
 
+    @JsonIgnore
     @Column(name = "created_by_email", nullable = false)
     private String createdByEmail;
 

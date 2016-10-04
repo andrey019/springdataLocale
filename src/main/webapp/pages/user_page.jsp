@@ -204,7 +204,7 @@
         </div>
         <br>
 
-        <p style="word-wrap: normal"><b>Users with which you share this list (click to delete):</b></p>
+        <p style="word-wrap: normal"><b>Click to delete this list from user:</b></p>
         <div class="width100">
             <div id="sharedUsers" class="list-group">
 

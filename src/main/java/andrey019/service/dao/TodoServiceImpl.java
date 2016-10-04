@@ -183,12 +183,12 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public String unShareWith(String email, long todoListId, long idToUnShareWith) {
+    public String unShareWith(String email, long todoListId, String emailToUnShareWith) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ERROR;
         }
-        User userToUnShare = userRepository.findOne(idToUnShareWith);
+        User userToUnShare = userRepository.findByEmail(emailToUnShareWith);
         if (userToUnShare == null) {
             return ERROR;
         }
@@ -231,44 +231,47 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public String getDeleteInfo(String email, long todoListId) {
+    public List<User> getDeleteInfo(String email, long todoListId) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return ERROR;
+            return null;
         }
         List<User> users = userRepository.findBySharedTodoLists_Id(todoListId);
         if ( (users == null) || (users.isEmpty()) ) {
-            return ERROR;
+            return null;
         }
         if (!users.contains(user)) {
-            return ERROR;
+            return null;
         }
         users.remove(user);
-        return htmlGenerator.generateTodoListsInfoHtml(users);
+        return users;
+        //return htmlGenerator.generateTodoListsInfoHtml(users);
     }
 
     @Transactional
     @Override
-    public String getSharedWithInfo(String email, long todoListId) {
+    public Set<User> getSharedWithInfo(String email, long todoListId) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return ERROR;
+            return null;
         }
         TodoList todoList = todoListRepository.findOne(todoListId);
         if (todoList == null) {
-            return ERROR;
+            return null;
         }
         if (!todoList.getUsers().contains(user)) {
-            return ERROR;
+            return null;
         }
         entityManager.detach(todoList);
         todoList.getUsers().remove(user);
-        if (todoList.getOwner().equals(user)) {
-            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), null);
-        } else {
-            todoList.getUsers().remove(todoList.getOwner());
-            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), todoList.getOwner());
-        }
+        todoList.getUsers().remove(todoList.getOwner());
+        return todoList.getUsers();
+//        if (todoList.getOwner().equals(user)) {
+//            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), null);
+//        } else {
+//            todoList.getUsers().remove(todoList.getOwner());
+//            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), todoList.getOwner());
+//        }
     }
 
     @Transactional
@@ -292,7 +295,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public String getDoneTodosByListId(String email, long todoListId, String timeZone) {
+    public Set<DoneTodo> getDoneTodosByListId(String email, long todoListId) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
@@ -305,7 +308,8 @@ public class TodoServiceImpl implements TodoService {
             return null;
         }
         todoList.getDoneTodos().size();
-        return htmlGenerator.generateDoneTodosHtml(todoList.getDoneTodos(), timeZone);
+        return todoList.getDoneTodos();
+        //return htmlGenerator.generateDoneTodosHtml(todoList.getDoneTodos(), timeZone);
     }
 
     @Transactional

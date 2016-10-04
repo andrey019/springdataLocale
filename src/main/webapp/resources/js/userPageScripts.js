@@ -349,7 +349,8 @@ function loadDoneTodos() {
             if (data == "") {
                 window.showDoneTodos = null;
             }
-            document.getElementById("doneTodoResult").innerHTML = data;
+            //document.getElementById("doneTodoResult").innerHTML = data;
+            constructDoneTodos(data);
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);
@@ -557,7 +558,8 @@ function getDeleteInfo() {
             } else if (data == "") {
                 document.getElementById("delInfo").innerHTML = "This list isn't shared with anybody";
             } else {
-                document.getElementById("delInfo").innerHTML = data;
+                //document.getElementById("delInfo").innerHTML = data;
+                constructDeleteInfo(data);
             }
         },
         error: function (jqXHR, exception) {
@@ -664,7 +666,7 @@ function unShareUser(event) {
         "todoId": 0,
         "doneTodoId": 0,
         "shareWith": null,
-        "unShareWith": unShareUser.id.split("=")[1],
+        "unShareWith": unShareUser.id,
         "todoText": null,
         "listName": null
     };
@@ -712,7 +714,8 @@ function getShareInfo() {
             } else if (data == "") {
                 document.getElementById("sharedUsers").innerHTML = "This list isn't shared with anybody";
             } else {
-                document.getElementById("sharedUsers").innerHTML = data;
+                //document.getElementById("sharedUsers").innerHTML = data;
+                constructShareInfo(data);
             }
         },
         error: function (jqXHR, exception) {
@@ -798,11 +801,13 @@ function findTodo() {
         contentType: 'application/json',
         headers: getCSRFHeader(),
         success: function (data) {
+            //alert(JSON.stringify(data));
             document.getElementById("todoResult").innerHTML = "";
             document.getElementById("doneTodoResult").innerHTML = "";
             $("#showDoneTodosButton").hide();
             document.getElementById("navbarText").innerHTML = "Serch results...";
-            document.getElementById("searchResult").innerHTML = data;
+            //document.getElementById("searchResult").innerHTML = data;
+            constructSearchResult(data);
             document.getElementById(window.currentList.id).className = "list-group-item";
             window.currentList = null;
         },

@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 
 @Service("searchService")
@@ -41,14 +46,17 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private UserRepository userRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
     @Override
-    public String findTodos(String email, String request, String timeZone) {
+    public HashMap<TodoList, Set<Todo>> findTodos(String email, String request) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return EMPTY;
+            return null;
         }
-        return searchAndBuild(user, request, timeZone);
+        return search(user, request);
     }
 
     private String searchAndBuild(User user, String request, String timeZone) {
@@ -74,6 +82,28 @@ public class SearchServiceImpl implements SearchService {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private HashMap<TodoList, Set<Todo>> search(User user, String request) {
+        HashMap<TodoList, Set<Todo>> result = new HashMap<>();
+        user.getSharedTodoLists().size();
+        for (TodoList todoList : user.getSharedTodoLists()) {
+            todoList.getTodos().size();
+            entityManager.detach(todoList);
+            todoList.setOwner(null);
+            for (Todo todo : todoList.getTodos()) {
+                if (todo.getTodoText().contains(request)) {
+                    if (result.containsKey(todoList)) {
+                        result.get(todoList).add(todo);
+                    } else {
+                        Set<Todo> newSet = new HashSet<>();
+                        newSet.add(todo);
+                        result.put(todoList, newSet);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     private void addTodo(StringBuilder stringBuilder, Todo todo, SimpleDateFormat dateFormatter) {

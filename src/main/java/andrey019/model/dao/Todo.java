@@ -26,6 +26,7 @@ public class Todo {
     @Column(name = "created_by_name", nullable = false)
     private String createdByName;
 
+    @JsonIgnore
     @Column(name = "created_by_email", nullable = false)
     private String createdByEmail;
 

@@ -1,6 +1,7 @@
 package andrey019.model.dao;
 
 import andrey019.model.json.JsonProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -17,6 +19,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -26,24 +29,30 @@ public class User {
     @Column(nullable = false)
     private String lName;
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TodoList> todoLists = new HashSet<>();
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.MERGE})
     private Set<TodoList> sharedTodoLists = new HashSet<>();
 
+    @JsonIgnore
     @OrderBy("id DESC")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Donation> donations = new HashSet<>();
 
+    @JsonIgnore
     @Column(nullable = false)
     private String state = State.ACTIVE.getState();
 
+    @JsonIgnore
     @Column(nullable = false)
     private String role = Role.USER.getRole();
 
+    @JsonIgnore
     @Column(name = "sign_in_provider")
     private String signInProvider;
 
@@ -135,6 +144,7 @@ public class User {
         this.signInProvider = signInProvider;
     }
 
+    @JsonIgnore
     public String getFullName() {
         return fName + " " + lName;
     }
