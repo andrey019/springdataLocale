@@ -8,7 +8,6 @@ import andrey019.model.dao.User;
 import andrey019.repository.DonationRepository;
 import andrey019.repository.DonationWaitRepository;
 import andrey019.repository.UserRepository;
-import andrey019.service.maintenance.LogService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;

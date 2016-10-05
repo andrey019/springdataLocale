@@ -20,7 +20,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final static String MAIL_SUBJECT = "WunderWaffel registration confirmation";
     private final static String MAIL_TEXT_0 = "<html><body>You were trying to register an account on WunderWaffel, " +
             "to confirm please click on the link below...<br>" +
-            "<a href=\"http://springdata-andrey019.rhcloud.com/auth/confirm?code=";
+            "<a href=\"http://wunderwaffel-andrey019.rhcloud.com/auth/confirm?code=";
     private final static String MAIL_TEXT_1 = "\" class=\"btn btn-success\">Confirm</a><br><br>" +
             "If you don't know what's happening, just ignore this message.</body></html>";
 

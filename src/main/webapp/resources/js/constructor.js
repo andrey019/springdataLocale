@@ -111,17 +111,13 @@ function constructSearchResult(data) {
         });
         result.appendChild(group);
 
-        var span = document.createElement("span");
-        span.className = "badge";
-        span.innerHTML = todoList.todoAmount;
         var listButton = document.createElement("button");
         listButton.id = "list=" + todoList.id;
         listButton.name = todoList.name;
         listButton.className = "btn btn-primary";
         listButton.onclick = loadTodos;
         listButton.style = "word-wrap: break-word";
-        listButton.innerHTML = todoList.name + "  ";
-        listButton.appendChild(span);
+        listButton.innerHTML = todoList.name;
         result.appendChild(listButton);
         result.appendChild(document.createElement("br"));
         result.appendChild(document.createElement("br"));
