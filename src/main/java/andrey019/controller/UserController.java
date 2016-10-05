@@ -1,27 +1,21 @@
 package andrey019.controller;
 
-import andrey019.model.api.JsonList;
 import andrey019.model.dao.DoneTodo;
 import andrey019.model.dao.Todo;
 import andrey019.model.dao.TodoList;
 import andrey019.model.dao.User;
-import andrey019.model.json.JsonFindTodo;
-import andrey019.model.json.JsonMessage;
-import andrey019.model.json.JsonProfile;
-import andrey019.model.json.JsonTodoList;
+import andrey019.model.json.*;
 import andrey019.service.SearchService;
 import andrey019.service.auth.ProfileService;
 import andrey019.service.dao.TodoService;
 import andrey019.service.maintenance.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -57,14 +51,6 @@ public class UserController {
         logService.ajaxJson("loadLists " + getUserEmail());
         return todoService.getAllTodoLists(getUserEmail());
     }
-
-//    @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = TEXT_UTF8)
-//    @ResponseBody
-//    public String loadTodos(@RequestBody JsonTodoList jsonTodoList) {
-//        logService.ajaxJson("loadTodos " + getUserEmail());
-//        return todoService.getTodosByListId(getUserEmail(), jsonTodoList.getTodoListId(),
-//                jsonTodoList.getTimeZone());
-//    }
 
     @RequestMapping(value = "/loadTodos", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
@@ -144,7 +130,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getProfile", method = RequestMethod.POST, produces = JSON_UTF8)
-    public @ResponseBody JsonProfile getProfile() {
+    @ResponseBody
+    public JsonProfile getProfile() {
         logService.ajaxJson("getProfile " + getUserEmail());
         return profileService.getProfile(getUserEmail());
     }
@@ -158,7 +145,7 @@ public class UserController {
 
     @RequestMapping(value = "/findTodo", method = RequestMethod.POST, produces = JSON_UTF8)
     @ResponseBody
-    public HashMap<TodoList, Set<Todo>> findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
+    public List<JsonSearchResult> findTodo(@RequestBody JsonFindTodo jsonFindTodo) {
         logService.ajaxJson("findTodo " + getUserEmail() + " / " + jsonFindTodo.getRequest());
         return searchService.findTodos(getUserEmail(), jsonFindTodo.getRequest());
     }

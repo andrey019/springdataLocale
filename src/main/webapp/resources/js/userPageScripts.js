@@ -324,7 +324,7 @@ function loadTodos(event) {
     event.preventDefault();
     window.currentList = event.currentTarget;
     window.showDoneTodos = null;
-    window.navbarText = event.currentTarget.getAttribute("name");
+    window.navbarText = event.currentTarget.name;
     document.getElementById("searchResult").innerHTML = "";
     loadLists();
 }
@@ -438,7 +438,7 @@ function doneTodoFromSearch(event) {
     var todo = event.currentTarget;
 
     var jsonDoneTodo = {
-        "listId": todo.getAttribute("name").split("=")[1],
+        "listId": todo.name.split("=")[1],
         "todoId": todo.id.split("=")[1],
         "doneTodoId": 0,
         "shareWith": null,

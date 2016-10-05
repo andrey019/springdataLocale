@@ -6,7 +6,6 @@ import andrey019.repository.DoneTodoRepository;
 import andrey019.repository.TodoListRepository;
 import andrey019.repository.TodoRepository;
 import andrey019.repository.UserRepository;
-import andrey019.service.HtmlGenerator;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +38,6 @@ public class TodoServiceImpl implements TodoService {
 
     @Autowired
     private DoneTodoRepository doneTodoRepository;
-
-    @Autowired
-    private HtmlGenerator htmlGenerator;
 
     @Autowired
     private EmailValidator emailValidator;

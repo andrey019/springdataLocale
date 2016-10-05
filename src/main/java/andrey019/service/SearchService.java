@@ -1,13 +1,11 @@
 package andrey019.service;
 
 
-import andrey019.model.dao.Todo;
-import andrey019.model.dao.TodoList;
+import andrey019.model.json.JsonSearchResult;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 public interface SearchService {
 
-    HashMap<TodoList, Set<Todo>> findTodos(String email, String request);
+    List<JsonSearchResult> findTodos(String email, String request);
 }

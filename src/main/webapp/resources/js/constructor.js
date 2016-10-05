@@ -60,7 +60,6 @@ function constructDoneTodos(data) {
 }
 
 function constructDeleteInfo(data) {
-    alert(JSON.stringify(data));
     var result = document.getElementById("delInfo");
     result.innerHTML = "";
     $.each(data, function(i, user) {
@@ -74,7 +73,6 @@ function constructDeleteInfo(data) {
 }
 
 function constructShareInfo(data) {
-    alert(JSON.stringify(data));
     var result = document.getElementById("sharedUsers");
     result.innerHTML = "";
     $.each(data, function(i, user) {
@@ -84,36 +82,49 @@ function constructShareInfo(data) {
         button.style = "word-wrap: break-word";
         button.onclick = unShareUser;
         button.innerHTML = user.email + "<br>" + user.fName + " " + user.lName;
-        //button.disabled = true;
         result.appendChild(button);
     });
 }
 
 function constructSearchResult(data) {
-    alert(JSON.stringify(data));
     var result = document.getElementById("searchResult");
     result.innerHTML = "";
     $.each(data, function(i, todoList) {
         var group = document.createElement("div");
         group.className = "list-group";
 
+        $.each(todoList.todos, function(j, todo) {
+            var signDiv = document.createElement("div");
+            signDiv.style = "font-size:11px; text-align: right";
+            var date = new Date(todo.created);
+            signDiv.innerHTML = "Created by: " + todo.createdByName + ", at " + date.toLocaleTimeString() + " " +
+                date.toLocaleDateString() + ".";
+            var button = document.createElement("button");
+            button.id = "todo=" + todo.id;
+            button.name = "list=" + todoList.id;
+            button.className = "list-group-item";
+            button.onclick = doneTodoFromSearch;
+            button.style = "word-wrap: break-word";
+            button.innerHTML = todo.todoText;
+            button.appendChild(signDiv);
+            group.appendChild(button);
+        });
+        result.appendChild(group);
+
+        var span = document.createElement("span");
+        span.className = "badge";
+        span.innerHTML = todoList.todoAmount;
         var listButton = document.createElement("button");
         listButton.id = "list=" + todoList.id;
+        listButton.name = todoList.name;
         listButton.className = "btn btn-primary";
         listButton.onclick = loadTodos;
         listButton.style = "word-wrap: break-word";
-        alert(todoList);
-        listButton.innerHTML = todoList.name;
-        group.appendChild(listButton);
-        result.appendChild(group);
-
-        //var button = document.createElement("button");
-        //button.id = "list=" + todoList.id;
-        //button.className = "list-group-item";
-        //button.onclick = loadTodos;
-        //button.name = todoList.name;
-        //button.innerHTML = todoList.name;
-        //button.appendChild(span);
-        //result.appendChild(button);
+        listButton.innerHTML = todoList.name + "  ";
+        listButton.appendChild(span);
+        result.appendChild(listButton);
+        result.appendChild(document.createElement("br"));
+        result.appendChild(document.createElement("br"));
+        result.appendChild(document.createElement("br"));
     });
 }
