@@ -335,7 +335,6 @@ function loadDoneTodos() {
             if (data == "") {
                 window.showDoneTodos = null;
             }
-            //document.getElementById("doneTodoResult").innerHTML = data;
             constructDoneTodos(data);
         },
         error: function (jqXHR, exception) {

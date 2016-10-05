@@ -1,7 +1,7 @@
 package andrey019.controller;
 
 import andrey019.model.json.JsonEmail;
-import andrey019.model.json.JsonRegistration;
+import andrey019.model.json.JsonProfile;
 import andrey019.service.auth.PasswordRecovery;
 import andrey019.service.maintenance.LogService;
 import andrey019.service.auth.RegistrationService;
@@ -71,10 +71,10 @@ public class AuthController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST, produces = TEXT_UTF8)
     @ResponseBody
-    public String registration(@RequestBody JsonRegistration jsonRegistration) {
-        logService.ajaxJson("registration " + jsonRegistration.getEmail());
-        return registrationService.registration(jsonRegistration.getEmail(), jsonRegistration.getPassword(),
-                jsonRegistration.getfName(), jsonRegistration.getlName());
+    public String registration(@RequestBody JsonProfile jsonProfile) {
+        logService.ajaxJson("registration " + jsonProfile.getEmail());
+        return registrationService.registration(jsonProfile.getEmail(), jsonProfile.getPassword(),
+                jsonProfile.getfName(), jsonProfile.getlName());
     }
 
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
