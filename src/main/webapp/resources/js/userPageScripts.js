@@ -74,21 +74,9 @@ $(document).ready(function () {
         }
     };
 
-    setTimeZone();
     loadLists();
     listAutoSelect();
 });
-
-function setTimeZone() {
-    var offset = -( (new Date().getTimezoneOffset()) / 60);
-    if ( (offset >= -12) && (offset < 0) ) {
-        window.timeZone = "GMT" + offset;
-    } else if ( (offset > 0) && (offset <= 12) ) {
-        window.timeZone = "GMT+" + offset;
-    } else {
-        window.timeZone = "GMT";
-    }
-}
 
 function listAutoSelect() {
     setTimeout(function() {
@@ -295,8 +283,7 @@ function loadCurrentListTodos() {
     }
 
     var jsonCurrentListTodos = {
-        "todoListId": window.currentList.id.split("=")[1],
-        "timeZone": window.timeZone
+        "todoListId": window.currentList.id.split("=")[1]
     };
 
     $.ajax({
@@ -335,8 +322,7 @@ function loadDoneTodos() {
     }
 
     var jsonDoneTodos = {
-        "todoListId": window.currentList.id.split("=")[1],
-        "timeZone": window.timeZone
+        "todoListId": window.currentList.id.split("=")[1]
     };
 
     $.ajax({
@@ -542,8 +528,7 @@ function addTodoList() {
 function getDeleteInfo() {
     document.getElementById("delTodoListHeader").innerHTML = window.navbarText;
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1],
-        "timeZone": null
+        "todoListId": window.currentList.id.split("=")[1]
     };
 
     $.ajax({
@@ -558,7 +543,6 @@ function getDeleteInfo() {
             } else if (data == "") {
                 document.getElementById("delInfo").innerHTML = "This list isn't shared with anybody";
             } else {
-                //document.getElementById("delInfo").innerHTML = data;
                 constructDeleteInfo(data);
             }
         },
@@ -574,8 +558,7 @@ function deleteTodoList() {
     }
 
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1],
-        "timeZone": null
+        "todoListId": window.currentList.id.split("=")[1]
     };
 
     $.ajax({
@@ -698,8 +681,7 @@ function unShareUser(event) {
 function getShareInfo() {
     document.getElementById("shareTodoListHeader").innerHTML = window.navbarText;
     var jsonTodoList = {
-        "todoListId": window.currentList.id.split("=")[1],
-        "timeZone": null
+        "todoListId": window.currentList.id.split("=")[1]
     };
 
     $.ajax({
@@ -714,7 +696,6 @@ function getShareInfo() {
             } else if (data == "") {
                 document.getElementById("sharedUsers").innerHTML = "This list isn't shared with anybody";
             } else {
-                //document.getElementById("sharedUsers").innerHTML = data;
                 constructShareInfo(data);
             }
         },
@@ -790,8 +771,7 @@ function findTodo() {
     }
 
     var jsonFindTodo = {
-        "request": document.getElementById("findTodoInput").value,
-        "timeZone": window.timeZone
+        "request": document.getElementById("findTodoInput").value
     };
 
     $.ajax({
@@ -801,15 +781,14 @@ function findTodo() {
         contentType: 'application/json',
         headers: getCSRFHeader(),
         success: function (data) {
-            //alert(JSON.stringify(data));
             document.getElementById("todoResult").innerHTML = "";
             document.getElementById("doneTodoResult").innerHTML = "";
             $("#showDoneTodosButton").hide();
-            document.getElementById("navbarText").innerHTML = "Serch results...";
-            //document.getElementById("searchResult").innerHTML = data;
-            constructSearchResult(data);
             document.getElementById(window.currentList.id).className = "list-group-item";
             window.currentList = null;
+            document.getElementById("navbarText").innerHTML = "Serch results...";
+            constructSearchResult(data);
+
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);

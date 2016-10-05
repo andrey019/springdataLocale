@@ -241,7 +241,6 @@ public class TodoServiceImpl implements TodoService {
         }
         users.remove(user);
         return users;
-        //return htmlGenerator.generateTodoListsInfoHtml(users);
     }
 
     @Transactional
@@ -262,12 +261,6 @@ public class TodoServiceImpl implements TodoService {
         todoList.getUsers().remove(user);
         todoList.getUsers().remove(todoList.getOwner());
         return todoList.getUsers();
-//        if (todoList.getOwner().equals(user)) {
-//            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), null);
-//        } else {
-//            todoList.getUsers().remove(todoList.getOwner());
-//            return htmlGenerator.generateSharedInfoHtml(todoList.getUsers(), todoList.getOwner());
-//        }
     }
 
     @Transactional
@@ -286,7 +279,6 @@ public class TodoServiceImpl implements TodoService {
         }
         todoList.getTodos().size();
         return todoList.getTodos();
-        //return htmlGenerator.generateTodosHtml(todoList.getTodos(), timeZone);
     }
 
     @Transactional
@@ -305,7 +297,6 @@ public class TodoServiceImpl implements TodoService {
         }
         todoList.getDoneTodos().size();
         return todoList.getDoneTodos();
-        //return htmlGenerator.generateDoneTodosHtml(todoList.getDoneTodos(), timeZone);
     }
 
     @Transactional
