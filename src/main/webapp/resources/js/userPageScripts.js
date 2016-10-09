@@ -783,11 +783,12 @@ function findTodo() {
             document.getElementById("todoResult").innerHTML = "";
             document.getElementById("doneTodoResult").innerHTML = "";
             $("#showDoneTodosButton").hide();
-            document.getElementById(window.currentList.id).className = "list-group-item";
-            window.currentList = null;
+            if (window.currentList != null) {
+                document.getElementById(window.currentList.id).className = "list-group-item";
+                window.currentList = null;
+            }
             document.getElementById("navbarText").innerHTML = "Serch results...";
             constructSearchResult(data);
-
         },
         error: function (jqXHR, exception) {
             jsonErrorHandler(jqXHR, exception);
