@@ -9,6 +9,7 @@ function constructTodoLists(data) {
         var button = document.createElement("button");
         button.id = "list=" + todoList.id;
         button.className = "list-group-item";
+        button.style = "word-wrap: break-word";
         button.onclick = loadTodos;
         button.name = todoList.name;
         button.innerHTML = todoList.name;
