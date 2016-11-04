@@ -10,7 +10,7 @@ public class LogServiceImpl implements LogService {
 
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static {
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT+2"));
     }
 
 
